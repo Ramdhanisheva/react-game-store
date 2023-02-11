@@ -1,58 +1,62 @@
-import {render, screen} from '@testing-library/react'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import "@testing-library/jest-dom"
-import userEvent from "@testing-library/react"
-import fetchGames from "../fetchGames"
+import { sendRequest, storeGames} from "../fetchGames"
 
-// Could you write a 
-
-const url = "https://testing.org"
-const test = vi.fn()
-// vi.mock('../fetchGames.js', () => {
-//     return ({
-//         name: "Hello"
-//     })
-// })
-fetch =  vi.fn().mockImplementation((url) => {
-    Promise.resolve({
-        json: () => Promise.resolve({ name: "Faagi Amni"})
-    })
+const url = 'https://www.example.com/games'
+const expectedData = {
+    results: [
+        {
+            name: 'CyberPunk 2077'
+        },
+        {
+            name: 'Genshin Impact'
+        }
+    ]
+}
+const mockFetch = jest.fn().mockResolvedValue({
+    json: () => Promise.resolve(expectedData)
 })
-// fetchGames.mockImplementation("Hello")
 
-// vi.fn('../fetchGames.js', () => {
-//     return Promise.resolve({
-//         json: () => Promise.resolve({
-//             data: [
-//                 {
-//                     name: "Cyberpunk 2077"
-//                 },
-//                 {
-//                     name: "Grand Turismo
-//                 },
-//                 {
-//                     name: "Apex Legends"
-//                 }
-//             ]
-//         })
-//     })
-// })
-// examples of how to mock a function using Jest in react 
-describe.only("test fetchGames", () => {
-    it("display cached object", async () => {
-        // const games = await fetchGames(url)
-        const data = await fetchGames()
-        console.log(data)
-        // const test = await fetch("url")
-        console.log(test)
-        expect(data).toBe("Hello")
-        // console.log(games)
-        // const obj = {
-        //     name: "Cyberpunk 2077" 
-        // }
-        // // expect(games).toHaveProperty(obj)
-        // expect(fetchGames).toBeCalled(1)
+beforeEach(() => {
+    jest.clearAllMocks()
+})
+
+
+describe('test sendRequest', () => {
+    it("sendRequest is called once", async () => {
+        window.fetch = mockFetch
+
+        await sendRequest(url)
+
+        expect(mockFetch).toHaveBeenCalledTimes(1)
+    })
+
+    it("should return an object of gamess with 1st arr as CyberPunk 2077", async () => {
+        window.fetch = mockFetch
+    
+        const games = await sendRequest(url)
+        console.log(games)
+    
+        expect(games.results[0].name).toMatch(/Cyber/)
     })
 })
 
-// best matcher to 
+describe('test storeGames', () => {
+    it('should return the correct data from localStorage when present', async () => {
+        localStorage.setItem('cachedRequest', JSON.stringify(expectedData))
+
+        window.fetch = jest.fn()
+
+        const games = await storeGames(url)
+
+        expect(games).toMatchObject(expectedData)
+
+    })
+
+    it("should call sendRequest and store the response in localStorage when not present", async () => {
+        window.fetch = mockFetch
+
+        const games = await storeGames(url)
+
+        expect(JSON.parse(localStorage.getItem('cachedRequest'))).toMatchObject(expectedData)
+    })
+})

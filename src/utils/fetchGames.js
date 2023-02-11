@@ -18,4 +18,4 @@ const fetchGames = (url) => {
     return storeGames(url)
 }
 
-export default fetchGames
+export {sendRequest, storeGames, fetchGames}
