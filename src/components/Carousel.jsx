@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
-import fetchGames from "../utils/fetchGames";
+import { fetchGames } from "../utils/fetchGames";
 import { scrollToNext, scrollToPrev } from "../utils/scrollToIndex";
 import { Link } from "react-router-dom";
 
@@ -131,6 +131,7 @@ const Carousel = () => {
               setCurrentSlideIndex(prevIndex => prevIndex == 5 ? 0 : prevIndex + 1)
               setProgressBar(0)
             }}
+            data-testid={`nextBtn${index}`}
           >
             ❯
           </button>

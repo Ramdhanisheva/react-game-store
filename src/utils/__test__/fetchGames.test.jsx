@@ -55,7 +55,7 @@ describe('test storeGames', () => {
     it("should call sendRequest and store the response in localStorage when not present", async () => {
         window.fetch = mockFetch
 
-        const games = await storeGames(url)
+        await storeGames(url)
 
         expect(JSON.parse(localStorage.getItem('cachedRequest'))).toMatchObject(expectedData)
     })

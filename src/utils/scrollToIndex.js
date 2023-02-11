@@ -1,5 +1,3 @@
-import { useRef } from "react"
-
 const scrollToPrev = (index, length, ref) => {
     const listNode = ref.current
     const isFirstSlide = index == 0
