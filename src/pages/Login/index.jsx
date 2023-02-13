@@ -12,6 +12,7 @@ const Login = () => {
   const [email, setEmail] = useState(null)
   const [password, setPassword] = useState(null)
   const [isRemember, setIsRemember] = useState(true)
+  const [isError, setIsError] = useState(false)
   const { dispatch } = useContext(AuthContext)
   const navigate = useNavigate()
 
@@ -27,10 +28,11 @@ const Login = () => {
         const userCredential = await signInWithEmailAndPassword(auth, formJson.email, formJson.password)
         const user = userCredential.user
         console.log(user)
-        dispatch({type: "login", payload: user})
+        dispatch({type: "login", payload: user, isRemember: formJson.isRemember || false})
         navigate("/")
       }
       catch(error) {
+        setIsError(true)
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage)
@@ -123,6 +125,9 @@ const Login = () => {
                   Forgot password?
                 </a>
               </div>
+              {isError && <div className="flex justify-center">
+                <span className="text-error font-semibold text-sm">Wrong email or password!</span>
+              </div>}
               <button
                 type="submit"
                 className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary dark:hover:bg-primary-700 dark:focus:ring-primary-800"

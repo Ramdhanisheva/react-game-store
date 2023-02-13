@@ -5,12 +5,21 @@ import { createContext } from "react";
 const AuthReducer = (state, action) => {
   switch (action.type) {
     case "login":
-      return {
-        currentUser: action.payload,
-      };
+      if (action.isRemember) {
+        return {
+          currentUser: action.payload,
+          isRemember: action.isRemember
+        }
+      } else {
+        return {
+          currentUser: action.payload,
+          isRemember: null
+        }
+      }
     case "logout":
       return {
         currentUser: null,
+        isRemember: null,
       };
     default:
       return state;
@@ -19,14 +28,16 @@ const AuthReducer = (state, action) => {
 
 const AuthContext = createContext(null)
 const initialState = {
-    currentUser: JSON.parse(localStorage.getItem('user')) || null
+    currentUser: JSON.parse(sessionStorage.getItem('user')) || JSON.parse(localStorage.getItem('user')) || null
 }
 
 const AuthContextProvider = ({children}) => {
     const [state, dispatch] = useReducer(AuthReducer, initialState)
 
     useEffect(() => {
-        localStorage.setItem("user", JSON.stringify(state.currentUser))
+      state.isRemember 
+        ? localStorage.setItem("user", JSON.stringify(state.currentUser))
+        : sessionStorage.setItem('user', JSON.stringify(state.currentUser))
     }, [state.currentUser])
 
     return(
