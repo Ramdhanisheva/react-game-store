@@ -9,9 +9,11 @@ const Carousel = () => {
   const [sixGames, setSixGames] = useState([]);
   const [progressBar, setProgressBar] = useState(0)
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
+  // const [currentSlideName, setCurrentSlideName] = useState("")
   const [loading, setLoading] = useState(true)
   const listRef = useRef(null);
   const intervalRef = useRef(null)
+  // const [isCalled, setIsCalled] = useState(false)
 
 
   useEffect(() => {
@@ -59,8 +61,8 @@ const Carousel = () => {
     return () => { ignore = true; }; 
 
  }, []); 
-
   useEffect(() => {
+    // !isCalled ? (setCurrentSlideName(sixGames[currentSlideIndex].name) && (called = true)) : null
     if (!loading) {
       intervalRef.current = setInterval(() => {
         progressBar >= 100 && setCurrentSlideIndex(prevIndex => prevIndex == 5 ? 0 : prevIndex + 1)
@@ -135,7 +137,8 @@ const Carousel = () => {
         {!loading && <><div className="carousel w-full rounded-2xl aspect-[16/9] overflow-hidden" ref={listRef}>
           {images}
         </div>
-          <span className="text-4xl font-bold text-white absolute p-12 self-end bottom-5">Cyberpunk 2077</span>
+          {/* <span className="text-4xl font-bold text-white absolute p-12 self-end bottom-10">{currentSlideName}</span> */}
+
         <progress className="progress progress-primary w-full transition-all ease-in-out duration-200 " value={progressBar} max="100"></progress></>}
         </div>
       </div>
