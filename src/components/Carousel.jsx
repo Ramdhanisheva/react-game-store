@@ -55,33 +55,6 @@ const Carousel = () => {
       }
     }
     sendRequest()
-    
-    // (async () => { 
-    //   let timeoutId
-    //   let games
-    //   const sendRequest = async () => {
-    //     try {
-    //       games = await fetchGames("https://api.rawg.io/api/games?page_size=40&key=da8b78f38c134484a249b5f177270923")
-    //     } catch(err) {
-    //       throw new Error(err)
-    //     }
-    //   }
-
-    //   const debouncedRequest = () => {
-    //     clearTimeout(timeoutId)
-
-    //     timeoutId = setTimeout(() => {
-    //       sendRequest()
-    //     }, 10000)
-    //   }
-    //   debouncedRequest()
-
-    //   if (!ignore) { 
-    //     console.log(games); 
-    //     setGameList(games); 
-    //     randomGame(games); 
-    //   } 
-    // })(); 
 
     return () => { ignore = true; }; 
 
@@ -116,21 +89,22 @@ const Carousel = () => {
         <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
           <button
             className="btn btn-circle"
-            onClick={() => {
-              scrollToPrev(index, 6, listRef);
-              setCurrentSlideIndex(prevIndex => prevIndex == 0 ? 5 : prevIndex - 1)
+            onClick={() => [
+              scrollToPrev(index, 6, listRef),
+              setCurrentSlideIndex(prevIndex => prevIndex == 0 ? 5 : prevIndex - 1),
               setProgressBar(0)
-            }}
+            ]}
           >
             ❮
           </button>
           <button
             className="btn btn-circle"
-            onClick={() => {
-              scrollToNext(index, 6, listRef);
-              setCurrentSlideIndex(prevIndex => prevIndex == 5 ? 0 : prevIndex + 1)
+            onClick={() => [
+              setCurrentSlideIndex(prevIndex => prevIndex == 5 ? 0 : prevIndex + 1),
+              scrollToNext(index, 6, listRef),
               setProgressBar(0)
-            }}
+              
+            ]}
             data-testid={`nextBtn${index}`}
           >
             ❯
@@ -156,15 +130,16 @@ const Carousel = () => {
   // console.log(gameList);
   return (
     <div className="grid grid-cols-5 gap-8">
-      <div className="col-span-4">
-        <div>
+      <div className="md:col-span-4 col-span-5">
+        <div className="relative">
         {!loading && <><div className="carousel w-full rounded-2xl aspect-[16/9] overflow-hidden" ref={listRef}>
           {images}
         </div>
+          <span className="text-4xl font-bold text-white absolute p-12 self-end bottom-5">Cyberpunk 2077</span>
         <progress className="progress progress-primary w-full transition-all ease-in-out duration-200 " value={progressBar} max="100"></progress></>}
         </div>
       </div>
-      <div className="col-span-1 rounded-2x">
+      <div className="md:col-span-1 col-span-5 rounded-2x">
         <ul className="flex flex-col justify-between h-full gap-2">
         {!loading && sideCards}
         </ul>
