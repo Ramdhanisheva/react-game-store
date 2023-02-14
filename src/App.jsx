@@ -1,6 +1,7 @@
 import { Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
@@ -18,7 +19,7 @@ const App = () => {
       <Route path="/" element={<Home />} />
       <Route path="/auth">
         <Route path="login" element={<Login />} />
-        <Route path="signup" element={<Login />} />
+        <Route path="signup" element={<Signup />} />
       </Route>
     </Routes>
   );

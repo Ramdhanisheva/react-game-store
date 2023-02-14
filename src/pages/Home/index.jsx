@@ -25,7 +25,7 @@ const Home = () => {
                 <Link to="/auth/login">Login</Link>
               </li>
               <li className="text-white hover:text-white transition-colors ease-in-out duration-200">
-                <Link to="/">Sign up</Link>
+                <Link to="/auth/signup">Sign up</Link>
               </li>
             </>
           ) : (

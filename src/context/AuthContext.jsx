@@ -8,13 +8,13 @@ const AuthReducer = (state, action) => {
       if (action.isRemember) {
         return {
           currentUser: action.payload,
-          isRemember: action.isRemember
-        }
+          isRemember: action.isRemember,
+        };
       } else {
         return {
           currentUser: action.payload,
-          isRemember: null
-        }
+          isRemember: null,
+        };
       }
     case "logout":
       return {
@@ -26,25 +26,32 @@ const AuthReducer = (state, action) => {
   }
 };
 
-const AuthContext = createContext(null)
+const AuthContext = createContext(null);
 const initialState = {
-    currentUser: JSON.parse(sessionStorage.getItem('user')) || JSON.parse(localStorage.getItem('user')) || null
-}
+  currentUser:
+    JSON.parse(sessionStorage.getItem("user")) ||
+    JSON.parse(localStorage.getItem("user")) ||
+    null,
+};
 
-const AuthContextProvider = ({children}) => {
-    const [state, dispatch] = useReducer(AuthReducer, initialState)
+const AuthContextProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(AuthReducer, initialState);
 
-    useEffect(() => {
-      state.isRemember 
-        ? localStorage.setItem("user", JSON.stringify(state.currentUser))
-        : sessionStorage.setItem('user', JSON.stringify(state.currentUser))
-    }, [state.currentUser])
+  useEffect(() => {
+    state.isRemember && state.currentUser
+      ? localStorage.setItem("user", JSON.stringify(state.currentUser))
+      : sessionStorage.setItem("user", JSON.stringify(state.currentUser));
 
-    return(
-        <AuthContext.Provider value={{user: state.currentUser , dispatch}}>
-            {children}
-        </AuthContext.Provider>
-    )
-}
+    !state.currentUser &&
+      localStorage.setItem("user", null) &&
+      sessionStorage.setItem("user", null);
+  }, [state.currentUser]);
 
-export {AuthContextProvider, AuthContext}
+  return (
+    <AuthContext.Provider value={{ user: state.currentUser, dispatch }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export { AuthContextProvider, AuthContext };
