@@ -29,7 +29,7 @@ const Navbar = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <FaGithub className="text-white text-lg mr-1 md:mr-2" />
+            <FaGithub className="text-white text-md lg:text-lg mr-1 md:mr-2" />
             <h3 className="font-bold">armadillidiid</h3>
           </a>
         </div>

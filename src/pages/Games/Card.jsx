@@ -22,7 +22,7 @@ const Card = ({ id, name, image, platform, metacritic, released, genres }) => {
 
   return (
     <div
-      className="card card-compact col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 h-fit bg-zinc-800 shadow-xl"
+      className="card card-compact col-span-12 md:col-span-6 lg:col-span-4 2xl:col-span-3 h-fit bg-zinc-800 shadow-xl"
       key={id}
     >
       <figure className="relative aspect-[16/9] max-h-min overflow-hidden">

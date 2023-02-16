@@ -64,21 +64,12 @@ const Games = () => {
     );
   });
 
-  // if(games) {
-  //   const cardList = games.map((game, index) => {
-      
-  //   })
-  // } else {
-  //   const cardList = null
-  //   return cardList
-  // }
-
   return (
     <>
       <Navbar />
-      <div className="mx-10 4xl:max-w-[1980px] 4xl:mx-auto">
+      <div className="mx-2 md:mx-5 lg:mx-10 4xl:max-w-[1980px] 4xl:mx-auto">
         <div className="grid grid-cols-12 mt-8 relative">
-          <div className="col-span-2 h-screen p-4 bg-zinc-900 sticky top-0">
+          <div className="hidden md:block md:col-span-3 lg:col-span-2 h-screen p-4 bg-zinc-900 sticky top-0">
             <div className="mb-5">
               <h2 className="font-semibold text-white text-2xl mb-4">
                 Filters
@@ -90,7 +81,7 @@ const Games = () => {
               <ul>{genreList}</ul>
             </div>
           </div>
-          <div className="col-span-10">
+          <div className="col-span-12 md:col-span-9 lg:col-span-10">
             <div className="p-4">
               <h2 className="text-5xl font-bold text-white mb-2">
                 Trending and interesting
@@ -106,11 +97,6 @@ const Games = () => {
               </button>
             </div>
             <div className="grid grid-cols-12 gap-6 p-4">
-              {/* <div className=" col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 bg-red-300 w-[200px] h-[200px]"></div>
-              <div className=" col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 bg-red-500 w-[200px] h-[200px]"></div>
-              <div className=" col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 bg-red-500 w-[200px] h-[200px]"></div>
-              <div className=" col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 bg-red-600 w-[200px] h-[200px]"></div>
-              <div className=" col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 bg-red-600 w-[200px] h-[200px]"></div> */}
               {games && games.map((game, index) => (
                 <Card
                 key={index}
