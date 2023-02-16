@@ -15,7 +15,7 @@ const Home = () => {
       <div className="container mx-auto px-4">
         <ul className="flex py-8 gap-7 text-sm">
           <li className="text-white/50 hover:text-white transition-colors ease-in-out duration-200">
-            <Link to="/" className="">
+            <Link to="/games" className="">
               Browse
             </Link>
           </li>

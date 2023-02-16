@@ -8,6 +8,10 @@ module.exports = {
       colors: {
         zinc: colors.zinc,
       },
+      screens: {
+        '3xl': '1600px',
+        '4xl': '2560px',
+      }
     },
   },
   plugins: [require("daisyui")],

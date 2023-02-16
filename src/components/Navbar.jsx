@@ -4,7 +4,7 @@ import { FaSearch, FaGamepad, FaGithub } from "react-icons/fa";
 
 const Navbar = () => {
   return (
-    <div className="navbar flex-wrap justify-between text-white">
+    <div className="navbar flex-wrap justify-between text-white px-4">
       <div className="flex">
         <Link to="/" className="flex p-3 active:scale-95 transition ease-in-out order-first md:order-first">
             <FaGamepad className="self-center mr-2 " />
