@@ -1,10 +1,11 @@
 import { Routes, Route, Link } from "react-router-dom";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Games from "./pages/Games";
 
 const App = () => {
   const navigate = useNavigate()
@@ -21,6 +22,11 @@ const App = () => {
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
       </Route>
+      <Route path="/games" element={
+        <RequireAuth>
+          <Games />
+        </RequireAuth>
+      } />
     </Routes>
   );
 };
