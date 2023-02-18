@@ -1,65 +1,104 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import Navbar from "../../components/Navbar";
 import { FaInbox, FaStar, FaCalendarAlt } from "react-icons/fa";
 import genres from "./genres";
 import filters from "./filters";
 import Card from "./Card";
-import {fetchGames} from "../../utils/fetchGames"
-
+import { fetchGames } from "../../utils/fetchGames";
+import { reducer, initialState } from "./GameReducer";
 
 const Games = () => {
-  const [games, setGames] = useState(null)
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { games, filterBy, isSelected } = state;
+
+  console.log(games);
 
   useEffect(() => {
-    let ignore = false
+    let ignore = false;
     const sendRequest = async () => {
-      const data = await fetchGames("https://api.rawg.io/api/games?page_size=40&key=da8b78f38c134484a249b5f177270923")
+      const data = await fetchGames(
+        "https://api.rawg.io/api/games?page_size=40&key=da8b78f38c134484a249b5f177270923"
+      );
 
       if (!ignore) {
-        setGames(data.results)
+        dispatch({ type: "SET_GAMELIST", payload: data.results });
       }
-    }
-    sendRequest()
+    };
+    sendRequest();
 
     return () => {
-      ignore = true
+      ignore = true;
+    };
+  }, []);
+
+  const handleFilterClick = (filter) => {
+    console.log(`Sort by ${filter}`);
+    dispatch({ type: "SET_CURRENT_SELECTED_IS_FILTER_BY", payload: filter });
+    if (filter == "metacritic") {
+      dispatch({ type: "SORT_BY_METACRITIC", payload: filter });
+    } else if (filter == "release date") {
+      dispatch({ type: "SORT_BY_RELEASE_DATE", payload: filter });
+    } else {
+      null;
     }
-  }, [])
-  
-  const handleFilterClick = () => {
-    return;
   };
-  
-  const handleGenreClick = () => {
-    return;
+
+  const handleGenreClick = (genre) => {
+    console.log(`Sort by ${genre}`);
+    dispatch({ type: "FILTER_BY_GENRE", payload: genre });
+    dispatch({ type: "SET_CURRENT_SELECTED_IS_FILTER_BY", payload: genre });
   };
-  
+
   const filterList = filters.map((filter, index) => {
     return (
-      <li key={index} className="filter-list">
-        <button className="flex text-lg p-1" onClick={handleFilterClick}>
-          <div className="p-3 text-xl mr-2 rounded-md bg-zinc-800 text-white">
+      <li
+        key={index}
+        className="cursor-pointer group"
+        onClick={() => handleFilterClick(filter.name)}
+      >
+        <button
+          className="flex text-lg p-1"
+          onClick={() => handleFilterClick(filter.name)}
+        >
+          <div
+            className={
+              isSelected == filter.name
+                ? "p-3 text-xl mr-2 rounded-md bg-white text-black transition-colors duration-200 ease-in-out"
+                : "p-3 text-xl mr-2 rounded-md bg-zinc-800 text-white group-hover:text-black group-hover:bg-white transition-colors duration-200 ease-in-out"
+            }
+          >
             {filter.icon}
           </div>
-          <span className="self-center capitalize text-white">{filter.name}</span>
+          <span className="self-center capitalize text-white">
+            {filter.name}
+          </span>
         </button>
       </li>
     );
   });
-  
-  console.log(genres)
+
   const genreList = genres.map((genre, index) => {
     return (
-      <li key={index} className="flex text-lg p-1 cursor-pointer genre-list" onClick={handleFilterClick}>
-        <button className="">
-          <div className="p-3 text-xl mr-2 rounded-md bg-zinc-800 text-white">
+      <li
+        key={index}
+        className="cursor-pointer group"
+        onClick={() => handleGenreClick(genre.name)}
+      >
+        <button className="flex text-lg p-1">
+          <div
+            className={
+              isSelected == genre.name
+                ? "p-3 text-xl mr-2 rounded-md bg-white text-black  transition-colors duration-200 ease-in-out"
+                : "p-3 text-xl mr-2 rounded-md bg-zinc-800 text-white group-hover:text-black group-hover:bg-white transition-colors duration-200 ease-in-out"
+            }
+          >
             {genre.icon}
           </div>
-        </button>
-          <span className="self-center capitalize text-white ">
+          <span className="self-center capitalize text-white">
             {genre.name == "rpg" ? genre.name.toUpperCase() : genre.name}
           </span>
+        </button>
       </li>
     );
   });
@@ -69,7 +108,7 @@ const Games = () => {
       <Navbar />
       <div className="mx-2 md:mx-5 lg:mx-10 4xl:max-w-[1980px] 4xl:mx-auto">
         <div className="grid grid-cols-12 mt-8 relative">
-          <div className="hidden md:block md:col-span-3 lg:col-span-2 h-screen p-4 bg-zinc-900 sticky top-0">
+          <div className="hidden md:block md:col-span-3 lg:col-span-2 h-screen p-4 bg-zinc-900 sticky top-0 truncate">
             <div className="mb-5">
               <h2 className="font-semibold text-white text-2xl mb-4">
                 Filters
@@ -90,25 +129,38 @@ const Games = () => {
             </div>
             <div className="p-4 flex gap-2">
               <button className="btn bg-zinc-800 hover:bg-zinc-700 font-medium capitalize">
-                Filter by:<b className="ml-2">Adventure</b>
+                Filter by:
+                <b className="ml-2">
+                  {filterBy
+                    ? filterBy == "rpg"
+                      ? filterBy.toUpperCase()
+                      : filterBy
+                    : "none"}
+                </b>
               </button>
-              <button className="btn bg-zinc-800 hover:bg-zinc-700 font-bold capitalize">
+              <button
+                className="btn bg-zinc-800 hover:bg-zinc-700 font-bold capitalize"
+                onClick={() => {
+                  dispatch({ type: "CLEAR_FILTER" });
+                }}
+              >
                 Clear filter
               </button>
             </div>
             <div className="grid grid-cols-12 gap-6 p-4">
-              {games && games.map((game, index) => (
-                <Card
-                key={index}
-                id={index}
-                name={game.name}
-                image={game.background_image}
-                platform={game.parent_platforms}
-                metacritic={game.metacritic}
-                released={game.released}
-                genres={game.genres}
-                />
-              ))}
+              {games &&
+                games.map((game, index) => (
+                  <Card
+                    key={index}
+                    id={index}
+                    name={game.name}
+                    image={game.background_image}
+                    parent_platform={game.parent_platforms}
+                    metacritic={game.metacritic}
+                    released={game.released}
+                    genres={game.genres}
+                  />
+                ))}
             </div>
           </div>
         </div>

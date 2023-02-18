@@ -7,12 +7,23 @@ import {
 } from "react-icons/fa";
 import { SiNintendoswitch } from "react-icons/si";
 import getPrice from "../../utils/getPrice";
-import { faker } from '@faker-js/faker';
 
-const Card = ({ id, name, image, platform, metacritic, released, genres }) => {
+const Card = ({ id, name, image, metacritic, parent_platform, released, genres }) => {
   const genreList = genres.map((genre, index, arr) =>
     arr.length - 1 == index ? `${genre.name}` : `${genre.name}, `
   );
+
+  const platform = {
+    PC: null,
+    PlayStation: null,
+    Xbox: null,
+    Nintendo: null
+  }
+  parent_platform.forEach(item => {
+    platform[item.platform.name] = true
+  })
+
+  console.log(platform)
   const metacriticStyles =
     metacritic > 75
       ? "flex rounded-xl border-2 border-success text-success font-bold py-1 px-2 h-fit"
@@ -33,7 +44,7 @@ const Card = ({ id, name, image, platform, metacritic, released, genres }) => {
       </figure>
       <div className="p-5">
         <div className="flex justify-between text-white py-1">
-          <div className="flex hover:text-primary-focus transition-colors duration-200 cursor-pointer">
+          <div className="flex text-zinc-400 hover:text-primary transition-colors duration-200 cursor-pointer">
             <span className="text-sm font-semibold  mr-2 self-center">
               Add to cart
             </span>
@@ -42,17 +53,17 @@ const Card = ({ id, name, image, platform, metacritic, released, genres }) => {
           <span className="font-semibold">${getPrice(name)}</span>
         </div>
         <div className="flex justify-between gap-2">
-          <span className="card-title text-white">{name}</span>
+          <span className="card-title text-white font-bold">{name}</span>
           <div className={metacriticStyles}>
             <span className="text-xs">{metacritic}</span>
           </div>
         </div>
-        <div className="flex justify-between my-2">
+        <div className="flex justify-between my-2 text-white">
           <div className="flex gap-2">
-            {<FaWindows className="self-center" />}
-            <FaPlaystation className="self-center" />
-            <FaXbox className="self-center" />
-            <SiNintendoswitch className="self-center" />
+            {platform.PC  && <FaWindows className="self-center" />}
+            {platform.PlayStation && <FaPlaystation className="self-center" />}
+            {platform.Xbox && <FaXbox className="self-center" />}
+            {platform.Nintendo && <SiNintendoswitch className="self-center" />}
           </div>
         </div>
         <ul className="text-xs text-zinc-400">

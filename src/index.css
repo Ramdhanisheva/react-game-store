@@ -6,18 +6,7 @@
   font-family: "Poppins", sans-serif;
 }
 
-.genre-list button div {
-  transition-property: background-color, border-color, color, fill, stroke;
-  transition-duration: 200ms;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-.genre-list:hover button div {
-  transition-property: background-color, border-color, color, fill, stroke;
-  transition-duration: 200ms;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  color: #000000;
-  background-color: #ffffff;
-}
+
 
 .filter-list button div {
   transition-property: background-color, border-color, color, fill, stroke;
@@ -29,6 +18,4 @@
   transition-property: background-color, border-color, color, fill, stroke;
   transition-duration: 200ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  color: #000000;
-  background-color: #ffffff;
 }

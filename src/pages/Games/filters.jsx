@@ -4,8 +4,8 @@ import React from "react";
 
 const filters = [
   { name: "wishlist", icon: <FaInbox /> },
-  { name: "ratings", icon: <FaStar /> },
-  { name: "reviews", icon: <FaCalendarAlt /> },
+  { name: "metacritic", icon: <FaStar /> },
+  { name: "release date", icon: <FaCalendarAlt /> },
 ];
 
 export default filters;
