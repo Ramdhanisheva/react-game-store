@@ -1,21 +1,32 @@
-import genres from "./genres";
-
 const initialState = {
   games: null,
   initGames: null,
   wishlist: null,
-  isLike: null,
+  isHearted: {},
   filterBy: null,
   isSelected: null,
+  isLoading: true,
+  isInitialRender: true,
 };
 const reducer = (state, action) => {
   switch (action.type) {
     case "SET_GAMELIST":
+      // const heartedGames = {}
+      // action.payload.wishlist.forEach(doc => heartedGames[doc.data().name] = true)
       return {
         ...initialState,
-        games: action.payload,
-        initGames: action.payload,
+        games: action.payload.games,
+        initGames: action.payload.games,
       };
+    case 'UPDATE_WISHLIST':
+      const heartedGames = {}
+      action.payload.forEach(doc => heartedGames[doc.data().name] = true)
+      return {
+        ...state,
+        wishlist: action.payload,
+        isHearted: heartedGames,
+        isLoading: false,
+      }
     case "SET_CURRENT_SELECTED_IS_FILTER_BY":
       return {
         ...state,
@@ -65,7 +76,33 @@ const reducer = (state, action) => {
         filterBy: action.payload,
       };
     case "SORT_BY_WISHLIST":
-      return;
+      const sortedByWishlist = state.initGames.filter(game => {
+        let found = false
+        state.wishlist.forEach(heartedGame => {
+          if (heartedGame.data().name == game.name) {
+            found = true
+          }
+        })
+       if (found) {
+        return true
+       }
+      })
+
+      return {
+        ...state,
+        games: sortedByWishlist,
+        filterBy: action.payload
+      }
+    case "UPDATE_IS_LOADING":
+      return {
+        ...state,
+        isLoading: action.payload
+      }
+    case "UPDATE_IS_INITIAL_RENDER":
+      return {
+        ...state,
+        isInitialRender: action.payload
+      }
     case "CLEAR_FILTER":
       console.log(state.initGames);
       return {

@@ -1,53 +1,106 @@
 import React from "react";
-import { useState, useEffect, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import Navbar from "../../components/Navbar";
-import { FaInbox, FaStar, FaCalendarAlt } from "react-icons/fa";
 import genres from "./genres";
 import filters from "./filters";
 import Card from "./Card";
 import { fetchGames } from "../../utils/fetchGames";
 import { reducer, initialState } from "./GameReducer";
+import eraseDoc from "../../utils/eraseDoc";
+import createDoc from "../../utils/createDoc";
+import { db } from "../../utils/firebase";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+
 
 const Games = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { games, filterBy, isSelected } = state;
+  const { games, wishlist, filterBy, isSelected, isHearted, isLoading, isInitialRender } = state;
+  const {user} = useContext(AuthContext)
 
   console.log(games);
 
+  const filterSort = (filter) => {
+    if (filter == "metacritic") {
+      dispatch({ type: "SORT_BY_METACRITIC", payload: filter });
+    } else if (filter == "release date") {
+      dispatch({ type: "SORT_BY_RELEASE_DATE", payload: filter });
+    } else {
+      dispatch({ type: "SORT_BY_WISHLIST", payload: filter });
+    }
+  }
+
   useEffect(() => {
     let ignore = false;
+
     const sendRequest = async () => {
       const data = await fetchGames(
         "https://api.rawg.io/api/games?page_size=40&key=da8b78f38c134484a249b5f177270923"
       );
 
       if (!ignore) {
-        dispatch({ type: "SET_GAMELIST", payload: data.results });
+        dispatch({
+          type: "SET_GAMELIST",
+          payload: {
+            games: data.results,
+          },
+        });
       }
     };
+
+    const q = query(collection(db, "wishlist"), where("user", "==", user.uid))
+    const unsub = onSnapshot(q , (snapshot) => {
+      let list = []
+      snapshot.docs.forEach(doc => {
+        list.push(doc)
+      }) 
+      !ignore && dispatch({type: "UPDATE_WISHLIST", payload: list})
+    });
+
     sendRequest();
 
     return () => {
       ignore = true;
+      unsub()
     };
   }, []);
+
+  useEffect(() => {
+    if (isInitialRender) {
+      dispatch({type: "UPDATE_IS_INITIAL_RENDER", payload: false})
+    } else {
+      if (filterBy == "wishlist") {
+        !isLoading && filterSort("wishlist")
+      }
+    }
+
+  }, [wishlist])
+  
 
   const handleFilterClick = (filter) => {
     console.log(`Sort by ${filter}`);
     dispatch({ type: "SET_CURRENT_SELECTED_IS_FILTER_BY", payload: filter });
-    if (filter == "metacritic") {
-      dispatch({ type: "SORT_BY_METACRITIC", payload: filter });
-    } else if (filter == "release date") {
-      dispatch({ type: "SORT_BY_RELEASE_DATE", payload: filter });
-    } else {
-      null;
-    }
+    filterSort(filter)
   };
 
   const handleGenreClick = (genre) => {
     console.log(`Sort by ${genre}`);
     dispatch({ type: "FILTER_BY_GENRE", payload: genre });
     dispatch({ type: "SET_CURRENT_SELECTED_IS_FILTER_BY", payload: genre });
+  };
+
+  const handleHeartClick = (obj, docCollection, isHearted, name) => {
+    if (isHearted) {
+      const found = wishlist.find(heartedGame => heartedGame.data().name == name)
+      eraseDoc("wishlist", found.id)
+      // if (filterBy == "wishlist" && !isLoading) {
+      //   dispatch({ type: "SORT_BY_WISHLIST", payload: "wishlist"})
+      // }
+    } else {
+      dispatch({type: "UPDATE_IS_LOADING", payload: true})
+      createDoc(obj, docCollection);
+    }
   };
 
   const filterList = filters.map((filter, index) => {
@@ -159,6 +212,8 @@ const Games = () => {
                     metacritic={game.metacritic}
                     released={game.released}
                     genres={game.genres}
+                    isHearted={isHearted}
+                    handleHeartClick={handleHeartClick}
                   />
                 ))}
             </div>

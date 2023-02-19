@@ -9,7 +9,6 @@ import {
 import { FaPuzzlePiece, FaMountain } from "react-icons/fa";
 import React from "react";
 
-// create a function to implicit return an array of objects
 const genres = [
   { name: "action", icon: <GiBoxingGlove /> },
   { name: "strategy", icon: <GiChessKnight /> },
