@@ -19,7 +19,8 @@ const Card = ({
   released,
   genres,
   isHearted,
-  handleHeartClick
+  handleHeartClick,
+  isLoading
 }) => {
   const { user } = useContext(AuthContext);
 
@@ -63,8 +64,10 @@ const Card = ({
       <figure className="relative aspect-[16/9] max-h-min overflow-hidden">
         <img src={image} alt={name} className="" />
         <button
-          className={isHearted[name] ? "p-3 bg-black absolute top-3 right-3 rounded-full text-red-500 transition-colors"
-        : "p-3 bg-black absolute top-3 right-3 rounded-full text-white transition-all active:scale-90 hover:text-red-500"}
+          className={!isLoading ? isHearted[name] ? "p-3 bg-black absolute top-3 right-3 rounded-full text-red-500 transition-colors"
+        : "p-3 bg-black absolute top-3 right-3 rounded-full text-white transition-all active:scale-90 hover:text-red-500"
+        : "p-3 bg-black absolute top-3 right-3 rounded-full text-white btn-disabled"
+        }
           onClick={() => handleHeartClick(obj, "wishlist", isHearted[name], name)}
         >
           <FaHeart className=" text-sm" />

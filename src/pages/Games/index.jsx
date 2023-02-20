@@ -80,8 +80,10 @@ const Games = () => {
 
   const handleFilterClick = (filter) => {
     console.log(`Sort by ${filter}`);
-    dispatch({ type: "SET_CURRENT_SELECTED_IS_FILTER_BY", payload: filter });
-    filterSort(filter)
+    if (!isLoading) {
+      dispatch({ type: "SET_CURRENT_SELECTED_IS_FILTER_BY", payload: filter });
+      filterSort(filter)
+    }
   };
 
   const handleGenreClick = (genre) => {
@@ -94,9 +96,6 @@ const Games = () => {
     if (isHearted) {
       const found = wishlist.find(heartedGame => heartedGame.data().name == name)
       eraseDoc("wishlist", found.id)
-      // if (filterBy == "wishlist" && !isLoading) {
-      //   dispatch({ type: "SORT_BY_WISHLIST", payload: "wishlist"})
-      // }
     } else {
       dispatch({type: "UPDATE_IS_LOADING", payload: true})
       createDoc(obj, docCollection);
@@ -107,12 +106,11 @@ const Games = () => {
     return (
       <li
         key={index}
-        className="cursor-pointer group"
+        className="cursor-pointer group disabled"
         onClick={() => handleFilterClick(filter.name)}
       >
         <button
           className="flex text-lg p-1"
-          onClick={() => handleFilterClick(filter.name)}
         >
           <div
             className={
@@ -215,6 +213,7 @@ const Games = () => {
                     genres={game.genres}
                     isHearted={isHearted}
                     handleHeartClick={handleHeartClick}
+                    isLoading={isLoading}
                   />
                 )))
               : (queriedGames &&
@@ -230,6 +229,7 @@ const Games = () => {
                     genres={game.genres}
                     isHearted={isHearted}
                     handleHeartClick={handleHeartClick}
+                    isLoading={isLoading}
                   />
                 )))
             }
