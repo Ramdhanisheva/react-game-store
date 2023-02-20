@@ -2,10 +2,9 @@ const initialState = {
   games: null,
   initGames: null,
   queriedGames: null,
-  wishlist: null,
-  isHearted: {},
   filterBy: null,
   isSelected: null,
+  isHearted: null,
   isLoading: true,
   isInitialRender: true,
   searchQuery: "",
@@ -14,21 +13,18 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case "SET_GAMELIST":
-      // const heartedGames = {}
-      // action.payload.wishlist.forEach(doc => heartedGames[doc.data().name] = true)
       return {
         ...initialState,
         games: action.payload.games,
         initGames: action.payload.games,
       };
-    case 'UPDATE_WISHLIST':
+    case "UPDATE_IS_HEARTED":
       const heartedGames = {}
       action.payload.forEach(doc => heartedGames[doc.data().name] = true)
       return {
         ...state,
-        wishlist: action.payload,
         isHearted: heartedGames,
-        isLoading: false,
+        isLoading: false
       }
     case "SET_CURRENT_SELECTED_IS_FILTER_BY":
       return {
@@ -81,7 +77,7 @@ const reducer = (state, action) => {
     case "SORT_BY_WISHLIST":
       const sortedByWishlist = state.initGames.filter(game => {
         let found = false
-        state.wishlist.forEach(heartedGame => {
+        action.payload.wishlist.forEach(heartedGame => {
           if (heartedGame.data().name == game.name) {
             found = true
           }
@@ -94,7 +90,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         games: sortedByWishlist,
-        filterBy: action.payload
+        filterBy: action.payload.filter
       }
     case "UPDATE_IS_LOADING":
       return {

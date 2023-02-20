@@ -8,16 +8,14 @@ import { fetchGames } from "../../utils/fetchGames";
 import { reducer, initialState } from "./GameReducer";
 import eraseDoc from "../../utils/eraseDoc";
 import createDoc from "../../utils/createDoc";
-import { db } from "../../utils/firebase";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { FirestoreContext } from "../../context/FirestoreContext";
 
 
 const Games = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { games, queriedGames, wishlist, filterBy, searchQuery, isSelected, isHearted, isLoading, isInitialRender } = state;
-  const {user} = useContext(AuthContext)
+  const { games, queriedGames, filterBy, searchQuery, isLoading, isSelected, isHearted, isInitialRender } = state;
+  const { state:firestoreState } = useContext(FirestoreContext)
 
   console.log(games);
 
@@ -27,7 +25,7 @@ const Games = () => {
     } else if (filter == "release date") {
       dispatch({ type: "SORT_BY_RELEASE_DATE", payload: filter });
     } else {
-      dispatch({ type: "SORT_BY_WISHLIST", payload: filter });
+      dispatch({ type: "SORT_BY_WISHLIST", payload: {filter: filter, wishlist: firestoreState.wishlist} });
     }
   }
 
@@ -49,38 +47,31 @@ const Games = () => {
       }
     };
 
-    const q = query(collection(db, "wishlist"), where("user", "==", user.uid))
-    const unsub = onSnapshot(q , (snapshot) => {
-      let list = []
-      snapshot.docs.forEach(doc => {
-        list.push(doc)
-      }) 
-      !ignore && dispatch({type: "UPDATE_WISHLIST", payload: list})
-    });
-
     sendRequest();
 
     return () => {
       ignore = true;
-      unsub()
     };
   }, []);
 
   useEffect(() => {
+    // Re-render wishlist games if filter active
     if (isInitialRender) {
       dispatch({type: "UPDATE_IS_INITIAL_RENDER", payload: false})
     } else {
       if (filterBy == "wishlist") {
-        !isLoading && filterSort("wishlist")
+        !firestoreState.isLoading && filterSort("wishlist")
       }
     }
 
-  }, [wishlist])
+    dispatch({type: "UPDATE_IS_HEARTED", payload: firestoreState.wishlist})
+
+  }, [firestoreState.wishlist])
   
 
   const handleFilterClick = (filter) => {
     console.log(`Sort by ${filter}`);
-    if (!isLoading) {
+    if (!firestoreState.isLoading) {
       dispatch({ type: "SET_CURRENT_SELECTED_IS_FILTER_BY", payload: filter });
       filterSort(filter)
     }
@@ -94,7 +85,7 @@ const Games = () => {
 
   const handleHeartClick = (obj, docCollection, isHearted, name) => {
     if (isHearted) {
-      const found = wishlist.find(heartedGame => heartedGame.data().name == name)
+      const found = firestoreState.wishlist.find(heartedGame => heartedGame.data().name == name)
       eraseDoc("wishlist", found.id)
     } else {
       dispatch({type: "UPDATE_IS_LOADING", payload: true})
