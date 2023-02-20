@@ -58,7 +58,7 @@ const Card = ({
 
   return (
     <div
-      className="card card-compact col-span-12 md:col-span-6 lg:col-span-4 2xl:col-span-3 h-fit bg-zinc-800 shadow-xl"
+      className="card card-compact col-span-12 md:col-span-6 lg:col-span-4 2xl:col-span-3 h-fit bg-zinc-800 shadow-xl transition-all hover:bg-zinc-700/[.6] hover:scale-[1.02] duration-300"
       key={id}
     >
       <figure className="relative aspect-[16/9] max-h-min overflow-hidden">
