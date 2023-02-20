@@ -16,7 +16,7 @@ import { AuthContext } from "../../context/AuthContext";
 
 const Games = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { games, wishlist, filterBy, isSelected, isHearted, isLoading, isInitialRender } = state;
+  const { games, queriedGames, wishlist, filterBy, searchQuery, isSelected, isHearted, isLoading, isInitialRender } = state;
   const {user} = useContext(AuthContext)
 
   console.log(games);
@@ -158,7 +158,7 @@ const Games = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar dispatch={dispatch} />
       <div className="mx-2 md:mx-5 lg:mx-10 4xl:max-w-[1980px] 4xl:mx-auto">
         <div className="grid grid-cols-12 mt-8 relative">
           <div className="hidden md:block md:col-span-3 lg:col-span-2 h-screen p-4 bg-zinc-900 sticky top-0 truncate">
@@ -201,7 +201,8 @@ const Games = () => {
               </button>
             </div>
             <div className="grid grid-cols-12 gap-6 p-4">
-              {games &&
+              {searchQuery == "" 
+              ? (games &&
                 games.map((game, index) => (
                   <Card
                     key={index}
@@ -215,7 +216,23 @@ const Games = () => {
                     isHearted={isHearted}
                     handleHeartClick={handleHeartClick}
                   />
-                ))}
+                )))
+              : (queriedGames &&
+                queriedGames.map((game, index) => (
+                  <Card
+                    key={index}
+                    id={index}
+                    name={game.name}
+                    image={game.background_image}
+                    parent_platform={game.parent_platforms}
+                    metacritic={game.metacritic}
+                    released={game.released}
+                    genres={game.genres}
+                    isHearted={isHearted}
+                    handleHeartClick={handleHeartClick}
+                  />
+                )))
+            }
             </div>
           </div>
         </div>

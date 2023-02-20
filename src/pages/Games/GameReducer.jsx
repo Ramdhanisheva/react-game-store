@@ -1,12 +1,15 @@
 const initialState = {
   games: null,
   initGames: null,
+  queriedGames: null,
   wishlist: null,
   isHearted: {},
   filterBy: null,
   isSelected: null,
   isLoading: true,
   isInitialRender: true,
+  searchQuery: "",
+
 };
 const reducer = (state, action) => {
   switch (action.type) {
@@ -102,6 +105,17 @@ const reducer = (state, action) => {
       return {
         ...state,
         isInitialRender: action.payload
+      }
+    case "UPDATE_SEARCH_QUERY":
+      return {
+        ...state,
+        searchQuery: action.payload
+      }
+    case "FILTER_BY_SEARCH_QUERY":
+      const filterByQuery = state.games.filter(game => game.name.toLowerCase().includes(action.payload.toLowerCase()))
+      return {
+        ...state,
+        queriedGames: filterByQuery
       }
     case "CLEAR_FILTER":
       console.log(state.initGames);

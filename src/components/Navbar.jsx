@@ -2,7 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FaSearch, FaGamepad, FaGithub } from "react-icons/fa";
 
-const Navbar = () => {
+
+
+const Navbar = ({dispatch}) => {
+  const handleOnChange = (e) => {
+    const {value} = e.target
+    dispatch({type: "UPDATE_SEARCH_QUERY", payload: value})
+    dispatch({type: "FILTER_BY_SEARCH_QUERY", payload: value})
+  }
+  
   return (
     <div className="navbar flex-wrap justify-between text-white px-4">
       <div className="flex">
@@ -16,8 +24,9 @@ const Navbar = () => {
           type="text"
           placeholder="Search games..."
           className="input bg-zinc-800 focus:bg-[#343438] text-sm transition-all ease-in-out duration-200 w-full md:w-3/6 focus:w-full input-sm"
+          onChange={(e) => handleOnChange(e)}
         />
-        <div className="ml-3 text-zinc-400 hover:text-white active:scale-90 transition ease-in-out">
+        <div className="ml-3 text-zinc-400 hover:text-white active:scale-90 transition ease-in-out cursor-pointer">
             <FaSearch />
         </div>
       </div>
