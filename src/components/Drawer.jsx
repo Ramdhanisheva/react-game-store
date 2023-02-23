@@ -65,7 +65,9 @@ const Drawer = ({ children }) => {
                   : `${firestoreState.cartItems.data().games.length} games`
                   : "0 game"}
               </span>
-              <span className="font-semibold text-zinc-500 hover:text-zinc-300 transition-colors duration-200 cursor-pointer">Clear</span>
+              <span className="font-semibold text-zinc-500 hover:text-zinc-300 transition-colors duration-200 cursor-pointer"
+              onClick={() => handleCartClick("orders")}
+              >Clear</span>
             </div>
           </div>
           <ul className="flex flex-col flex-auto gap-3" id="content">

@@ -40,6 +40,12 @@ const CartContextProvider = ({children}) => {
         games: filteredGames,
       };
       modifyDoc(newObj, docCollection, firestoreState.cartItems.id);
+    } else {
+      const newObj =  {
+        ...firestoreState.cartItems.data(),
+        games: []
+      }
+      modifyDoc(newObj, docCollection, firestoreState.cartItems.id);
     }
   };
   return (

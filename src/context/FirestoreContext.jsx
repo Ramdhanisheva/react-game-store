@@ -39,6 +39,8 @@ const FirestoreContextProvider = ({ children }) => {
           ...state,
           isLoading: action.payload
         }
+      case "default":
+        throw new Error("Unknown action")
     }
   };
 
