@@ -2,12 +2,12 @@ import { Routes, Route, Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
-import { FirestoreContext } from "./context/FirestoreContext";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Games from "./pages/Games";
 import GameDetails from "./pages/GameDetails";
+import Drawer from "./components/Drawer";
 
 const App = () => {
   const navigate = useNavigate();
@@ -29,7 +29,9 @@ const App = () => {
           path=""
           element={
             <RequireAuth>
-              <Games />
+              <Drawer>
+                <Games />
+              </Drawer>
             </RequireAuth>
           }
         />
@@ -46,4 +48,4 @@ const App = () => {
   );
 };
 
-export default App;
+export { App as default };
