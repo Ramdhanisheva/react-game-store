@@ -12,6 +12,7 @@ import { SiNintendoswitch } from "react-icons/si";
 import getPrice from "../../utils/getPrice";
 import { CartContext } from "../../context/CartContext";
 import { FirestoreContext } from "../../context/FirestoreContext";
+import { Link } from "react-router-dom";
 
 const Card = ({
   id,
@@ -67,7 +68,8 @@ const Card = ({
       key={id}
     >
       <figure className="relative aspect-[16/9] max-h-min overflow-hidden">
-        <img src={image} alt={name} className="" />
+      <Link to={`/games/${name}`}>
+        <img src={image} alt={name} />
         <button
           className={
             !isLoading
@@ -82,6 +84,7 @@ const Card = ({
         >
           <FaHeart className=" text-sm" />
         </button>
+      </Link>
       </figure>
       <div className="p-5">
         <div className="flex justify-between text-white py-1">

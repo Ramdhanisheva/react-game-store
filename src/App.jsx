@@ -36,7 +36,7 @@ const App = () => {
           }
         />
         <Route
-          path=":name"
+          path=":id"
           element={
             <RequireAuth>
               <GameDetails />
