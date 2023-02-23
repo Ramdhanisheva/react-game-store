@@ -7,8 +7,11 @@ import {
 } from "react-icons/fa";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { FaCheck } from "react-icons/fa";
 import { SiNintendoswitch } from "react-icons/si";
 import getPrice from "../../utils/getPrice";
+import { CartContext } from "../../context/CartContext";
+import { FirestoreContext } from "../../context/FirestoreContext";
 
 const Card = ({
   id,
@@ -20,9 +23,11 @@ const Card = ({
   genres,
   isHearted,
   handleHeartClick,
-  isLoading
+  isLoading,
 }) => {
   const { user } = useContext(AuthContext);
+  const { handleCartClick } = useContext(CartContext);
+  const { state: firestoreState } = useContext(FirestoreContext);
 
   const obj = {
     user: user.uid,
@@ -49,7 +54,7 @@ const Card = ({
     platform[item.platform.name] = true;
   });
 
-  const metacriticStyles =
+  const metacriticStyles = // firestoreState.cartItems
     metacritic > 75
       ? "flex rounded-xl border-2 border-success text-success font-bold py-1 px-2 h-fit"
       : !metacritic
@@ -58,29 +63,46 @@ const Card = ({
 
   return (
     <div
-      className="card card-compact col-span-12 md:col-span-6 lg:col-span-4 2xl:col-span-3 h-fit bg-zinc-800 shadow-xl transition-all hover:bg-zinc-700/[.6] hover:scale-[1.02] duration-300"
+      className="card card-compact col-span-12 md:col-span-6 lg:col-span-4 2xl:col-span-3 h-fit bg-zinc-800 shadow-xl transition-all hover:bg-zinc-700/[.55] hover:scale-[1.02] duration-300"
       key={id}
     >
       <figure className="relative aspect-[16/9] max-h-min overflow-hidden">
         <img src={image} alt={name} className="" />
         <button
-          className={!isLoading ? isHearted[name] ? "p-3 bg-black absolute top-3 right-3 rounded-full text-red-500 transition-colors"
-        : "p-3 bg-black absolute top-3 right-3 rounded-full text-white transition-all active:scale-90 hover:text-red-500"
-        : "p-3 bg-black absolute top-3 right-3 rounded-full text-white btn-disabled"
-        }
-          onClick={() => handleHeartClick(obj, "wishlist", isHearted[name], name)}
+          className={
+            !isLoading
+              ? isHearted[name]
+                ? "p-3 bg-black absolute top-3 right-3 rounded-full text-red-500 transition-colors"
+                : "p-3 bg-black absolute top-3 right-3 rounded-full text-white transition-all active:scale-90 hover:text-red-500"
+              : "p-3 bg-black absolute top-3 right-3 rounded-full text-white btn-disabled"
+          }
+          onClick={() =>
+            handleHeartClick(obj, "wishlist", isHearted[name], name)
+          }
         >
           <FaHeart className=" text-sm" />
         </button>
       </figure>
       <div className="p-5">
         <div className="flex justify-between text-white py-1">
-          <div className="flex text-zinc-400 hover:text-primary transition-colors duration-200 cursor-pointer">
-            <span className="text-sm font-semibold  mr-2 self-center">
-              Add to cart
-            </span>
-            <FaPlus className="self-center" />
-          </div>
+          {(!firestoreState.isLoading && firestoreState.cartItems) && firestoreState.cartItems
+            .data()
+            .games.find((game) => game.name === name) 
+            ? <div className="flex items-center text-success transition-colors cursor-default">
+              <span className="text-sm font-semibold mr-2">Added</span>
+              <FaCheck />
+            </div> 
+            : (
+            <div
+              className="flex text-zinc-400 hover:text-primary transition-colors duration-200 cursor-pointer"
+              onClick={() => handleCartClick("orders", "add", obj)}
+            >
+              <span className="text-sm font-semibold  mr-2 self-center">
+                Add to cart
+              </span>
+              <FaPlus className="self-center" />
+            </div>
+          )}
           <span className="font-semibold">${getPrice(name)}</span>
         </div>
         <div className="flex justify-between gap-2">

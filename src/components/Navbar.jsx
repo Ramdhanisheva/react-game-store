@@ -1,21 +1,35 @@
-import React from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaSearch, FaGamepad, FaGithub } from "react-icons/fa";
+import { FirestoreContext } from "../context/FirestoreContext";
+import { CartContext } from "../context/CartContext";
 
+const Navbar = ({ dispatch }) => {
+  const { state:firestoreState, dispatch:firestoreDispatch } = useContext(FirestoreContext);
+  const { handleCartClick } = useContext(CartContext)
 
-
-const Navbar = ({dispatch}) => {
-  const handleOnChange = (e) => {
-    const {value} = e.target
-    dispatch({type: "UPDATE_SEARCH_QUERY", payload: value})
-    dispatch({type: "FILTER_BY_SEARCH_QUERY", payload: value})
-  }
+  // useEffect(() => {
+    
   
+  //   return () => {
+  //     second
+  //   }
+  // }, [state.cartItems])
+  
+  const handleOnChange = (e) => {
+    const { value } = e.target;
+    dispatch({ type: "UPDATE_SEARCH_QUERY", payload: value });
+    dispatch({ type: "FILTER_BY_SEARCH_QUERY", payload: value });
+  };
+
   return (
     <div className="navbar flex-wrap justify-between text-white px-4">
       <div className="flex">
-        <Link to="/" className="flex p-3 active:scale-95 transition ease-in-out order-first md:order-first">
-            <FaGamepad className="self-center mr-2 " />
+        <Link
+          to="/"
+          className="flex p-3 active:scale-95 transition ease-in-out order-first md:order-first"
+        >
+          <FaGamepad className="self-center mr-2 " />
           <h2 className="font-bold text-xl">GameStore</h2>
         </Link>
       </div>
@@ -27,7 +41,7 @@ const Navbar = ({dispatch}) => {
           onChange={(e) => handleOnChange(e)}
         />
         <div className="ml-3 text-zinc-400 hover:text-white active:scale-90 transition ease-in-out cursor-pointer">
-            <FaSearch />
+          <FaSearch />
         </div>
       </div>
       <div className="flex-none md:order-last">
@@ -59,18 +73,26 @@ const Navbar = ({dispatch}) => {
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                 />
               </svg>
-              <span className="badge badge-sm badge-accent indicator-item">8</span>
+              <span className="badge badge-sm badge-success indicator-item">
+                {(!firestoreState.isLoading && firestoreState.cartItems)  && firestoreState.cartItems.data().games.length}
+              </span>
             </div>
           </label>
           <div
             tabIndex={0}
             className="mt-3 card card-compact dropdown-content w-52 bg-base-100 shadow"
           >
-            <div className="card-body">
+            <div className="card-body bg-neutral-800 rounded-xl">
               <span className="font-bold text-lg">8 Items</span>
               <span className="text-info">Subtotal: $999</span>
               <div className="card-actions">
-                <button className="btn btn-primary btn-block">View cart</button>
+                <label
+                  htmlFor="my-drawer"
+                  className="btn btn-primary btn-block drawer-button"
+                >
+                  Open cart
+                </label>
+                {/* <button className="btn btn-primary btn-block drawer-button">View cart</button>   */}
               </div>
             </div>
           </div>

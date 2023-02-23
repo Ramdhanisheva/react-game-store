@@ -14,8 +14,8 @@ const FirestoreContext = createContext(null)
 const FirestoreContextProvider = ({ children }) => {
   const initialState = {
     wishlist: [],
-    cartItems: [],
-    orders: [],
+    cartItems: null,
+    orders: null,
     isLoading: true,
   };
 
@@ -27,24 +27,28 @@ const FirestoreContextProvider = ({ children }) => {
           wishlist: action.payload,
           isLoading: false
         };
-      case "UPDATE_CART_ITEMS":
-        return {
-          ...state,
-          cartItems: action.payload,
-        };
       case "UPDATE_ORDERS":
         return {
           ...state,
-          orders: action.payload,
+          orders: action.payload.ordersDocs,
+          cartItems: action.payload.cartItemsDocs[0],
+          isLoading: false
         };
+      case "UPDATE_IS_LOADING":
+        return {
+          ...state,
+          isLoading: action.payload
+        }
     }
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
   const { user } = useContext(AuthContext);
   useEffect(() => {
-    const q = query(collection(db, "wishlist"), where("user", "==", user.uid));
-    const unsub = onSnapshot(q, (snapshot) => {
+    const wishlistQuery = query(collection(db, "wishlist"), where("user", "==", user.uid));
+    const ordersQuery = query(collection(db, "orders"), where("user", "==", user.uid));
+    
+    const unsubWishlist = onSnapshot(wishlistQuery, (snapshot) => {
       const data = [];
       snapshot.docs.forEach((doc) => {
         data.push(doc);
@@ -52,8 +56,16 @@ const FirestoreContextProvider = ({ children }) => {
       dispatch({ type: "UPDATE_WISHLIST", payload: data });
     });
 
+    const unsubOrders = onSnapshot(ordersQuery, (snapshot) => {
+      const ordersDocs = snapshot.docs.filter(doc => doc.data().isCompleted == true)
+      const cartItemsDocs = snapshot.docs.filter(doc => doc.data().isCompleted == false)
+
+      dispatch({type: "UPDATE_ORDERS", payload: {ordersDocs: ordersDocs, cartItemsDocs: cartItemsDocs}})
+    })
+
     return () => {
-      unsub();
+      unsubWishlist();
+      unsubOrders();
     };
   }, []);
 
