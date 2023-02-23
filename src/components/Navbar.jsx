@@ -56,8 +56,7 @@ const Navbar = ({ dispatch }) => {
             <h3 className="font-bold">armadillidiid</h3>
           </a>
         </div>
-        <div className="dropdown dropdown-end">
-          <label tabIndex={0} className="btn btn-ghost btn-circle">
+          <label tabIndex={0} className="btn btn-ghost btn-circle" htmlFor="my-drawer">
             <div className="indicator">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -78,25 +77,6 @@ const Navbar = ({ dispatch }) => {
               </span>
             </div>
           </label>
-          <div
-            tabIndex={0}
-            className="mt-3 card card-compact dropdown-content w-52 bg-base-100 shadow"
-          >
-            <div className="card-body bg-neutral-800 rounded-xl">
-              <span className="font-bold text-lg">8 Items</span>
-              <span className="text-info">Subtotal: $999</span>
-              <div className="card-actions">
-                <label
-                  htmlFor="my-drawer"
-                  className="btn btn-primary btn-block drawer-button"
-                >
-                  Open cart
-                </label>
-                {/* <button className="btn btn-primary btn-block drawer-button">View cart</button>   */}
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
