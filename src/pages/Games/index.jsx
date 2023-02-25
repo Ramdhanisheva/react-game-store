@@ -199,7 +199,7 @@ const Games = () => {
                 games.map((game, index) => (
                   <Card
                     key={index}
-                    id={index}
+                    id={game.id}
                     name={game.name}
                     image={game.background_image}
                     parent_platform={game.parent_platforms}
@@ -214,7 +214,7 @@ const Games = () => {
                 queriedGames.map((game, index) => (
                   <Card
                     key={index}
-                    id={index}
+                    id={game.id}
                     name={game.name}
                     image={game.background_image}
                     parent_platform={game.parent_platforms}

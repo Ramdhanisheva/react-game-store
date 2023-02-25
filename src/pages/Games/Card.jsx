@@ -67,7 +67,7 @@ const Card = ({
       key={id}
     >
       <figure className="relative aspect-[16/9] max-h-min overflow-hidden">
-      <Link to={`/games/${name}`}>
+      <Link to={`/games/${id}`}>
         <img src={image} alt={name} />
       </Link>
         <button
