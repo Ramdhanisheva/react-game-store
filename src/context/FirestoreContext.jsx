@@ -13,7 +13,7 @@ const FirestoreContext = createContext(null)
 
 const FirestoreContextProvider = ({ children }) => {
   const initialState = {
-    wishlist: [],
+    wishlist: null,
     cartItems: null,
     orders: null,
     isLoading: true,

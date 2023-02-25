@@ -14,8 +14,8 @@ import { FirestoreContext } from "../../context/FirestoreContext";
 
 const Games = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { games, queriedGames, filterBy, searchQuery, isLoading, isSelected, isHearted, isInitialRender } = state;
-  const { state:firestoreState } = useContext(FirestoreContext)
+  const { games, queriedGames, filterBy, searchQuery, isLoading, isSelected, isInitialRender } = state;
+  const { state:firestoreState, dispatch:firestoreDispatch } = useContext(FirestoreContext)
 
   console.log(games);
 
@@ -53,6 +53,7 @@ const Games = () => {
       ignore = true;
     };
   }, []);
+  console.log(isLoading)
 
   useEffect(() => {
     // Re-render wishlist games if filter active
@@ -64,8 +65,9 @@ const Games = () => {
       }
     }
 
-    dispatch({type: "UPDATE_IS_HEARTED", payload: firestoreState.wishlist})
-
+    return () => {
+      dispatch({type: "UPDATE_IS_INITIAL_RENDER", payload: true})
+    }
   }, [firestoreState.wishlist])
   
 
@@ -83,12 +85,14 @@ const Games = () => {
     dispatch({ type: "SET_CURRENT_SELECTED_IS_FILTER_BY", payload: genre });
   };
 
-  const handleHeartClick = (obj, docCollection, isHearted, name) => {
+  const handleHeartClick = (obj, docCollection, name) => {
+    const isHearted = firestoreState.wishlist.find(game => game.data().name === name);
     if (isHearted) {
+      firestoreDispatch({type: "UPDATE_IS_LOADING", payload: true})      
       const found = firestoreState.wishlist.find(heartedGame => heartedGame.data().name == name)
       eraseDoc("wishlist", found.id)
     } else {
-      dispatch({type: "UPDATE_IS_LOADING", payload: true})
+      firestoreDispatch({type: "UPDATE_IS_LOADING", payload: true})
       createDoc(obj, docCollection);
     }
   };
@@ -202,7 +206,6 @@ const Games = () => {
                     metacritic={game.metacritic}
                     released={game.released}
                     genres={game.genres}
-                    isHearted={isHearted}
                     handleHeartClick={handleHeartClick}
                     isLoading={isLoading}
                   />
@@ -218,7 +221,6 @@ const Games = () => {
                     metacritic={game.metacritic}
                     released={game.released}
                     genres={game.genres}
-                    isHearted={isHearted}
                     handleHeartClick={handleHeartClick}
                     isLoading={isLoading}
                   />

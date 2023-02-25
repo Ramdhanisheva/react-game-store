@@ -22,7 +22,6 @@ const Card = ({
   parent_platform,
   released,
   genres,
-  isHearted,
   handleHeartClick,
   isLoading,
 }) => {
@@ -70,21 +69,21 @@ const Card = ({
       <figure className="relative aspect-[16/9] max-h-min overflow-hidden">
       <Link to={`/games/${name}`}>
         <img src={image} alt={name} />
+      </Link>
         <button
           className={
-            !isLoading
-              ? isHearted[name]
+            !isLoading && firestoreState.wishlist
+              ? firestoreState.wishlist.find(game => game.data().name === name)
                 ? "p-3 bg-black absolute top-3 right-3 rounded-full text-red-500 transition-colors"
                 : "p-3 bg-black absolute top-3 right-3 rounded-full text-white transition-all active:scale-90 hover:text-red-500"
               : "p-3 bg-black absolute top-3 right-3 rounded-full text-white btn-disabled"
           }
           onClick={() =>
-            handleHeartClick(obj, "wishlist", isHearted[name], name)
+            handleHeartClick(obj, "wishlist", name)
           }
         >
           <FaHeart className=" text-sm" />
         </button>
-      </Link>
       </figure>
       <div className="p-5">
         <div className="flex justify-between text-white py-1">

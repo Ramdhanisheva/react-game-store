@@ -4,7 +4,6 @@ const initialState = {
   queriedGames: null,
   filterBy: null,
   isSelected: null,
-  isHearted: null,
   isLoading: true,
   isInitialRender: true,
   searchQuery: "",
@@ -17,15 +16,8 @@ const reducer = (state, action) => {
         ...initialState,
         games: action.payload.games,
         initGames: action.payload.games,
+        isLoading: false,
       };
-    case "UPDATE_IS_HEARTED":
-      const heartedGames = {}
-      action.payload.forEach(doc => heartedGames[doc.data().name] = true)
-      return {
-        ...state,
-        isHearted: heartedGames,
-        isLoading: false
-      }
     case "SET_CURRENT_SELECTED_IS_FILTER_BY":
       return {
         ...state,
