@@ -39,7 +39,9 @@ const App = () => {
           path=":id"
           element={
             <RequireAuth>
-              <GameDetails />
+              <Drawer>
+                <GameDetails />
+              </Drawer>
             </RequireAuth>
           }
         />

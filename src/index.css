@@ -7,6 +7,16 @@
 }
 
 
+.modified-navbar {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+  width: 100%;
+}
+:where(.modified-navbar > *) {
+  display: inline-flex;
+  align-items: center;
+}
 
 .filter-list button div {
   transition-property: background-color, border-color, color, fill, stroke;

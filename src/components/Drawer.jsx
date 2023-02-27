@@ -14,7 +14,6 @@ const Drawer = ({ children }) => {
     useContext(FirestoreContext);
   const [totalPrice, setTotalPrice] = useState(0);
 
-  console.log(firestoreState.cartItems);
   useEffect(() => {
     if (!firestoreState.isLoading && firestoreState.cartItems) {
       // const games = firestoreState.cartItems.data().games;
@@ -23,7 +22,7 @@ const Drawer = ({ children }) => {
         .games.reduce((accumulator, currentGame) => {
           return accumulator + Number(getPrice(currentGame.name));
         }, 0);
-      setTotalPrice(sum);
+      setTotalPrice(sum.toFixed(2));
     }
   }, [firestoreState.cartItems]);
 
