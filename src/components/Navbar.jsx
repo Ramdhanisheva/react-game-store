@@ -7,24 +7,19 @@ import { CartContext } from "../context/CartContext";
 const Navbar = ({ dispatch }) => {
   const { state:firestoreState, dispatch:firestoreDispatch } = useContext(FirestoreContext);
   const { handleCartClick } = useContext(CartContext)
-
-  // useEffect(() => {
-    
-  
-  //   return () => {
-  //     second
-  //   }
-  // }, [state.cartItems])
   
   const handleOnChange = (e) => {
+    if (!dispatch) {
+      return 
+    }
     const { value } = e.target;
     dispatch({ type: "UPDATE_SEARCH_QUERY", payload: value });
     dispatch({ type: "FILTER_BY_SEARCH_QUERY", payload: value });
   };
 
   return (
-    <div className="navbar flex-wrap justify-between text-white px-4">
-      <div className="flex">
+    <div className="modified-navbar px-0 flex-wrap justify-between text-white">
+      <div className="">
         <Link
           to="/"
           className="flex p-3 active:scale-95 transition ease-in-out order-first md:order-first"
