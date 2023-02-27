@@ -10,12 +10,14 @@ import eraseDoc from "../../utils/eraseDoc";
 import createDoc from "../../utils/createDoc";
 import { useContext } from "react";
 import { FirestoreContext } from "../../context/FirestoreContext";
+import { CartContext } from "../../context/CartContext";
 
 
 const Games = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { games, queriedGames, filterBy, searchQuery, isLoading, isSelected, isInitialRender } = state;
   const { state:firestoreState, dispatch:firestoreDispatch } = useContext(FirestoreContext)
+  const { handleHeartClick } = useContext(CartContext)
 
   console.log(games);
 
@@ -83,18 +85,6 @@ const Games = () => {
     console.log(`Sort by ${genre}`);
     dispatch({ type: "FILTER_BY_GENRE", payload: genre });
     dispatch({ type: "SET_CURRENT_SELECTED_IS_FILTER_BY", payload: genre });
-  };
-
-  const handleHeartClick = (obj, docCollection, name) => {
-    const isHearted = firestoreState.wishlist.find(game => game.data().name === name);
-    if (isHearted) {
-      firestoreDispatch({type: "UPDATE_IS_LOADING", payload: true})      
-      const found = firestoreState.wishlist.find(heartedGame => heartedGame.data().name == name)
-      eraseDoc("wishlist", found.id)
-    } else {
-      firestoreDispatch({type: "UPDATE_IS_LOADING", payload: true})
-      createDoc(obj, docCollection);
-    }
   };
 
   const filterList = filters.map((filter, index) => {
