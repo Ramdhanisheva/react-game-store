@@ -1,23 +1,27 @@
-import React from "react";
-import { useEffect, useReducer } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import Navbar from "../../components/Navbar";
-import genres from "./genres";
-import filters from "./filters";
-import Card from "./Card";
-import { fetchGames } from "../../utils/fetchGames";
-import { reducer, initialState } from "./GameReducer";
-import eraseDoc from "../../utils/eraseDoc";
-import createDoc from "../../utils/createDoc";
-import { useContext } from "react";
-import { FirestoreContext } from "../../context/FirestoreContext";
 import { CartContext } from "../../context/CartContext";
-
+import { FirestoreContext } from "../../context/FirestoreContext";
+import { fetchGames } from "../../utils/fetchGames";
+import Card from "./Card";
+import filters from "./filters";
+import { initialState, reducer } from "./GameReducer";
+import genres from "./genres";
 
 const Games = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { games, queriedGames, filterBy, searchQuery, isLoading, isSelected, isInitialRender } = state;
-  const { state:firestoreState, dispatch:firestoreDispatch } = useContext(FirestoreContext)
-  const { handleHeartClick } = useContext(CartContext)
+  const {
+    games,
+    queriedGames,
+    filterBy,
+    searchQuery,
+    isLoading,
+    isSelected,
+    isInitialRender,
+  } = state;
+  const { state: firestoreState, dispatch: firestoreDispatch } =
+    useContext(FirestoreContext);
+  const { handleHeartClick } = useContext(CartContext);
 
   console.log(games);
 
@@ -27,9 +31,12 @@ const Games = () => {
     } else if (filter == "release date") {
       dispatch({ type: "SORT_BY_RELEASE_DATE", payload: filter });
     } else {
-      dispatch({ type: "SORT_BY_WISHLIST", payload: {filter: filter, wishlist: firestoreState.wishlist} });
+      dispatch({
+        type: "SORT_BY_WISHLIST",
+        payload: { filter: filter, wishlist: firestoreState.wishlist },
+      });
     }
-  }
+  };
 
   useEffect(() => {
     let ignore = false;
@@ -55,29 +62,28 @@ const Games = () => {
       ignore = true;
     };
   }, []);
-  console.log(isLoading)
+  console.log(isLoading);
 
   useEffect(() => {
     // Re-render wishlist games if filter active
     if (isInitialRender) {
-      dispatch({type: "UPDATE_IS_INITIAL_RENDER", payload: false})
+      dispatch({ type: "UPDATE_IS_INITIAL_RENDER", payload: false });
     } else {
       if (filterBy == "wishlist") {
-        !firestoreState.isLoading && filterSort("wishlist")
+        !firestoreState.isLoading && filterSort("wishlist");
       }
     }
 
     return () => {
-      dispatch({type: "UPDATE_IS_INITIAL_RENDER", payload: true})
-    }
-  }, [firestoreState.wishlist])
-  
+      dispatch({ type: "UPDATE_IS_INITIAL_RENDER", payload: true });
+    };
+  }, [firestoreState.wishlist]);
 
   const handleFilterClick = (filter) => {
     console.log(`Sort by ${filter}`);
     if (!firestoreState.isLoading) {
       dispatch({ type: "SET_CURRENT_SELECTED_IS_FILTER_BY", payload: filter });
-      filterSort(filter)
+      filterSort(filter);
     }
   };
 
@@ -94,9 +100,7 @@ const Games = () => {
         className="cursor-pointer group disabled"
         onClick={() => handleFilterClick(filter.name)}
       >
-        <button
-          className="flex text-lg p-1"
-        >
+        <button className="flex text-lg p-1">
           <div
             className={
               isSelected == filter.name
@@ -141,8 +145,8 @@ const Games = () => {
 
   return (
     <>
-      <Navbar dispatch={dispatch} />
-      <div className="mx-2 md:mx-5 lg:mx-10 4xl:max-w-[1980px] 4xl:mx-auto">
+      <div className="mx-4 md:mx-6 lg:mx-10 4xl:max-w-[1980px] 4xl:mx-auto">
+        <Navbar dispatch={dispatch} />
         <div className="grid grid-cols-12 mt-8 relative">
           <div className="hidden md:block md:col-span-3 lg:col-span-2 h-screen p-4 bg-zinc-900 sticky top-0 truncate">
             <div className="mb-5">
@@ -184,38 +188,37 @@ const Games = () => {
               </button>
             </div>
             <div className="grid grid-cols-12 gap-6 p-4">
-              {searchQuery == "" 
-              ? (games &&
-                games.map((game, index) => (
-                  <Card
-                    key={index}
-                    id={game.id}
-                    name={game.name}
-                    image={game.background_image}
-                    parent_platform={game.parent_platforms}
-                    metacritic={game.metacritic}
-                    released={game.released}
-                    genres={game.genres}
-                    handleHeartClick={handleHeartClick}
-                    isLoading={isLoading}
-                  />
-                )))
-              : (queriedGames &&
-                queriedGames.map((game, index) => (
-                  <Card
-                    key={index}
-                    id={game.id}
-                    name={game.name}
-                    image={game.background_image}
-                    parent_platform={game.parent_platforms}
-                    metacritic={game.metacritic}
-                    released={game.released}
-                    genres={game.genres}
-                    handleHeartClick={handleHeartClick}
-                    isLoading={isLoading}
-                  />
-                )))
-            }
+              {searchQuery == ""
+                ? games &&
+                  games.map((game, index) => (
+                    <Card
+                      key={index}
+                      id={game.id}
+                      name={game.name}
+                      image={game.background_image}
+                      parent_platform={game.parent_platforms}
+                      metacritic={game.metacritic}
+                      released={game.released}
+                      genres={game.genres}
+                      handleHeartClick={handleHeartClick}
+                      isLoading={isLoading}
+                    />
+                  ))
+                : queriedGames &&
+                  queriedGames.map((game, index) => (
+                    <Card
+                      key={index}
+                      id={game.id}
+                      name={game.name}
+                      image={game.background_image}
+                      parent_platform={game.parent_platforms}
+                      metacritic={game.metacritic}
+                      released={game.released}
+                      genres={game.genres}
+                      handleHeartClick={handleHeartClick}
+                      isLoading={isLoading}
+                    />
+                  ))}
             </div>
           </div>
         </div>

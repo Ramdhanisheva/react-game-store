@@ -11,7 +11,9 @@ const Home = () => {
 
   return (
     <>
+    <div className="mx-4 md:mx-6 lg:mx-10 4xl:max-w-[1980px] 4xl:mx-auto">
       <Navbar />
+    </div>
       <div className="container mx-auto px-4">
         <ul className="flex py-8 gap-7 text-sm">
           <li className="text-white/50 hover:text-white transition-colors ease-in-out duration-200">
