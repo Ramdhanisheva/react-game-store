@@ -4,8 +4,7 @@ import { Link } from "react-router-dom";
 import { FirestoreContext } from "../context/FirestoreContext";
 
 const Navbar = ({ dispatch }) => {
-  const { state: firestoreState } =
-    useContext(FirestoreContext);
+  const { state: firestoreState } = useContext(FirestoreContext);
 
   const handleOnChange = (e) => {
     if (!dispatch) {

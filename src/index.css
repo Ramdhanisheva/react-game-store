@@ -6,7 +6,6 @@
   font-family: "Poppins", sans-serif;
 }
 
-
 .modified-navbar {
   display: flex;
   align-items: center;
@@ -29,3 +28,21 @@
   transition-duration: 200ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+button[data-testid="carousel-indicator"] {
+  background-color: #661AE6;
+  padding: 0.4rem;
+  border: 3px solid rgba(255, 255, 255, 0.5);
+}
+
+button[data-testid="carousel-indicator"]:hover {
+  background-color: #661AE6;
+  padding: 0.4rem;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+}
+
+
+
+
+

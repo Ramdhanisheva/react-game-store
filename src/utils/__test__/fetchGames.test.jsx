@@ -1,62 +1,62 @@
-import "@testing-library/jest-dom"
-import { sendRequest, storeGames} from "../fetchGames"
+import "@testing-library/jest-dom";
+import { sendRequest, storeGames } from "../fetchGames";
 
-const url = 'https://www.example.com/games'
+const url = "https://www.example.com/games";
 const expectedData = {
-    results: [
-        {
-            name: 'CyberPunk 2077'
-        },
-        {
-            name: 'Genshin Impact'
-        }
-    ]
-}
+  results: [
+    {
+      name: "CyberPunk 2077",
+    },
+    {
+      name: "Genshin Impact",
+    },
+  ],
+};
 const mockFetch = jest.fn().mockResolvedValue({
-    json: () => Promise.resolve(expectedData)
-})
+  json: () => Promise.resolve(expectedData),
+});
 
 beforeEach(() => {
-    jest.clearAllMocks()
-})
+  jest.clearAllMocks();
+});
 
+describe("test sendRequest", () => {
+  it("sendRequest is called once", async () => {
+    window.fetch = mockFetch;
 
-describe('test sendRequest', () => {
-    it("sendRequest is called once", async () => {
-        window.fetch = mockFetch
+    await sendRequest(url);
 
-        await sendRequest(url)
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+  });
 
-        expect(mockFetch).toHaveBeenCalledTimes(1)
-    })
+  it("should return an object of gamess with 1st arr as CyberPunk 2077", async () => {
+    window.fetch = mockFetch;
 
-    it("should return an object of gamess with 1st arr as CyberPunk 2077", async () => {
-        window.fetch = mockFetch
-    
-        const games = await sendRequest(url)
-        console.log(games)
-    
-        expect(games.results[0].name).toMatch(/Cyber/)
-    })
-})
+    const games = await sendRequest(url);
+    console.log(games);
 
-describe('test storeGames', () => {
-    it('should return the correct data from localStorage when present', async () => {
-        localStorage.setItem('cachedRequest', JSON.stringify(expectedData))
+    expect(games.results[0].name).toMatch(/Cyber/);
+  });
+});
 
-        window.fetch = jest.fn()
+describe("test storeGames", () => {
+  it("should return the correct data from localStorage when present", async () => {
+    localStorage.setItem("cachedRequest", JSON.stringify(expectedData));
 
-        const games = await storeGames(url)
+    window.fetch = jest.fn();
 
-        expect(games).toMatchObject(expectedData)
+    const games = await storeGames(url);
 
-    })
+    expect(games).toMatchObject(expectedData);
+  });
 
-    it("should call sendRequest and store the response in localStorage when not present", async () => {
-        window.fetch = mockFetch
+  it("should call sendRequest and store the response in localStorage when not present", async () => {
+    window.fetch = mockFetch;
 
-        await storeGames(url)
+    await storeGames(url);
 
-        expect(JSON.parse(localStorage.getItem('cachedRequest'))).toMatchObject(expectedData)
-    })
-})
+    expect(JSON.parse(localStorage.getItem("cachedRequest"))).toMatchObject(
+      expectedData
+    );
+  });
+});

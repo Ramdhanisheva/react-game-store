@@ -51,7 +51,7 @@ const reducer = (state, action) => {
       };
     case "SET_PROGRESS_BAR":
       return {
-      ...state,
+        ...state,
         progressBar: state.progressBar + action.payload,
       };
     case "SET_ERROR":

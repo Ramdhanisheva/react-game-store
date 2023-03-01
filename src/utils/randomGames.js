@@ -1,4 +1,3 @@
-
 function randomIndex(arr, chosen = []) {
   if (arr.results.length === 0) return;
   const random = Math.floor(Math.random() * arr.results.length);
@@ -22,4 +21,4 @@ const randomGames = (games, quantity) => {
   }
 };
 
-export default randomGames
+export default randomGames;

@@ -1,7 +1,7 @@
 import React from "react";
 
-const Spinner = ({size}) => {
-  const style = `${size} mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-primary`
+const Spinner = ({ size }) => {
+  const style = `${size} mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-primary`;
   return (
     <div role="status">
       <svg

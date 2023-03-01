@@ -52,5 +52,5 @@ const AuthContextProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
-};  
+};
 export { AuthContextProvider, AuthContext };

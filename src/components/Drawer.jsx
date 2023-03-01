@@ -60,13 +60,16 @@ const Drawer = ({ children }) => {
               <span className="font-extrabold text-3xl text-white">
                 {!firestoreState.isLoading && firestoreState.cartItems
                   ? firestoreState.cartItems.data().games.length == 1
-                  ? `${firestoreState.cartItems.data().games.length} game`
-                  : `${firestoreState.cartItems.data().games.length} games`
+                    ? `${firestoreState.cartItems.data().games.length} game`
+                    : `${firestoreState.cartItems.data().games.length} games`
                   : "0 game"}
               </span>
-              <span className="font-semibold text-zinc-500 hover:text-zinc-300 transition-colors duration-200 cursor-pointer"
-              onClick={() => handleCartClick("orders")}
-              >Clear</span>
+              <span
+                className="font-semibold text-zinc-500 hover:text-zinc-300 transition-colors duration-200 cursor-pointer"
+                onClick={() => handleCartClick("orders")}
+              >
+                Clear
+              </span>
             </div>
           </div>
           <ul className="flex flex-col flex-auto gap-3" id="content">

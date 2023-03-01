@@ -7,7 +7,6 @@ const initialState = {
   isLoading: true,
   isInitialRender: true,
   searchQuery: "",
-
 };
 const reducer = (state, action) => {
   switch (action.type) {
@@ -67,44 +66,46 @@ const reducer = (state, action) => {
         filterBy: action.payload,
       };
     case "SORT_BY_WISHLIST":
-      const sortedByWishlist = state.initGames.filter(game => {
-        let found = false
-        action.payload.wishlist.forEach(heartedGame => {
+      const sortedByWishlist = state.initGames.filter((game) => {
+        let found = false;
+        action.payload.wishlist.forEach((heartedGame) => {
           if (heartedGame.data().name == game.name) {
-            found = true
+            found = true;
           }
-        })
-       if (found) {
-        return true
-       }
-      })
+        });
+        if (found) {
+          return true;
+        }
+      });
 
       return {
         ...state,
         games: sortedByWishlist,
-        filterBy: action.payload.filter
-      }
+        filterBy: action.payload.filter,
+      };
     case "UPDATE_IS_LOADING":
       return {
         ...state,
-        isLoading: action.payload
-      }
+        isLoading: action.payload,
+      };
     case "UPDATE_IS_INITIAL_RENDER":
       return {
         ...state,
-        isInitialRender: action.payload
-      }
+        isInitialRender: action.payload,
+      };
     case "UPDATE_SEARCH_QUERY":
       return {
         ...state,
-        searchQuery: action.payload
-      }
+        searchQuery: action.payload,
+      };
     case "FILTER_BY_SEARCH_QUERY":
-      const filterByQuery = state.games.filter(game => game.name.toLowerCase().includes(action.payload.toLowerCase()))
+      const filterByQuery = state.games.filter((game) =>
+        game.name.toLowerCase().includes(action.payload.toLowerCase())
+      );
       return {
         ...state,
-        queriedGames: filterByQuery
-      }
+        queriedGames: filterByQuery,
+      };
     case "CLEAR_FILTER":
       console.log(state.initGames);
       return {

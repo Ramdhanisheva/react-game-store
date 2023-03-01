@@ -67,34 +67,36 @@ const Card = ({
       key={id}
     >
       <figure className="relative aspect-[16/9] max-h-min overflow-hidden">
-      <Link to={`/games/${id}`}>
-        <img src={image} alt={name} />
-      </Link>
+        <Link to={`/games/${id}`}>
+          <img src={image} alt={name} />
+        </Link>
         <button
           className={
             !isLoading && firestoreState.wishlist
-              ? firestoreState.wishlist.find(game => game.data().name === name)
+              ? firestoreState.wishlist.find(
+                  (game) => game.data().name === name
+                )
                 ? "p-3 bg-black absolute top-3 right-3 rounded-full text-red-500 transition-colors"
                 : "p-3 bg-black absolute top-3 right-3 rounded-full text-white transition-all active:scale-90 hover:text-red-500"
               : "p-3 bg-black absolute top-3 right-3 rounded-full text-white btn-disabled"
           }
-          onClick={() =>
-            handleHeartClick(obj, "wishlist", name)
-          }
+          onClick={() => handleHeartClick(obj, "wishlist", name)}
         >
           <FaHeart className=" text-sm" />
         </button>
       </figure>
       <div className="p-5">
         <div className="flex justify-between text-white py-1">
-          {(!firestoreState.isLoading && firestoreState.cartItems) && firestoreState.cartItems
+          {!firestoreState.isLoading &&
+          firestoreState.cartItems &&
+          firestoreState.cartItems
             .data()
-            .games.find((game) => game.name === name) 
-            ? <div className="flex items-center text-success transition-colors cursor-default">
+            .games.find((game) => game.name === name) ? (
+            <div className="flex items-center text-success transition-colors cursor-default">
               <span className="text-sm font-semibold mr-2">Added</span>
               <FaCheck />
-            </div> 
-            : (
+            </div>
+          ) : (
             <div
               className="flex text-zinc-400 hover:text-primary transition-colors duration-200 cursor-pointer"
               onClick={() => handleCartClick("orders", "add", obj)}

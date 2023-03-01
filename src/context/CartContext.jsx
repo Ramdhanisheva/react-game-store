@@ -13,7 +13,7 @@ const CartContextProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
 
   const handleCartClick = (docCollection, action, game) => {
-    console.log(game)
+    console.log(game);
     if (action == "add") {
       if (!firestoreState.cartItems) {
         const obj = {
@@ -57,8 +57,8 @@ const CartContextProvider = ({ children }) => {
     );
     const newObj = {
       ...obj,
-      user: user.uid
-    }
+      user: user.uid,
+    };
     if (isHearted) {
       firestoreDispatch({ type: "UPDATE_IS_LOADING", payload: true });
       const found = firestoreState.wishlist.find(
