@@ -1,19 +1,19 @@
-import { useState, useContext } from "react";
-import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import Navbar from "../../components/Navbar";
-import Spinner from "../../components/Spinner";
+import { Carousel } from "flowbite-react";
+import { useContext, useState } from "react";
 import {
-  FaArrowLeft,
   FaAngleDown,
   FaAngleUp,
-  FaPlus,
+  FaArrowLeft,
+  FaCheck,
   FaHeart,
-  FaCheck
+  FaPlus,
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import { FirestoreContext } from "../../context/FirestoreContext";
+import { Link, useParams } from "react-router-dom";
+import Navbar from "../../components/Navbar";
+import Spinner from "../../components/Spinner";
 import { CartContext } from "../../context/CartContext";
+import { FirestoreContext } from "../../context/FirestoreContext";
 
 const GameDetails = () => {
   const { state: firestoreState, dispatch: firestoreDispatch } =
@@ -33,15 +33,39 @@ const GameDetails = () => {
     queryFn: () => sendRequest(url),
   });
 
-  const obj = !isLoading && !isError && {
-    id: id,
-    name: data.name,
-    image: data.background_image,
-    metacritic: data.metacritic,
-    parent_platform: data.parent_platforms,
-    released: data.released,
-    genres: data.genres,
-  };
+  const {
+    isLoading: imagesIsLoading,
+    isError: imagesIsError,
+    data: dataImages,
+  } = useQuery({
+    queryKey: ["screenshots"],
+    queryFn: () =>
+      fetch(
+        `https://api.rawg.io/api/games/${id}/screenshots?key=da8b78f38c134484a249b5f177270923`
+      ).then((res) => res.json()),
+  });
+
+  console.log(dataImages);
+
+  const obj = !isLoading &&
+    !isError && {
+      id: id,
+      name: data.name,
+      image: data.background_image,
+      metacritic: data.metacritic,
+      parent_platform: data.parent_platforms,
+      released: data.released,
+      genres: data.genres,
+    };
+
+  const imagesList =
+    !imagesIsLoading &&
+    !imagesIsError &&
+    dataImages.results.map((screenshot, index) => {
+      console.log(screenshot);
+
+      return <img src={screenshot.image} alt="..." key={index} className="aspect-video" />;
+    });
 
   const Loader = () => {
     return (
@@ -61,8 +85,8 @@ const GameDetails = () => {
   return (
     <div className="flex flex-col min-h-screen mx-4 md:mx-6 lg:mx-10 4xl:max-w-[1980px] 4xl:mx-auto overflow-visible">
       <Navbar />
-      {isLoading || firestoreState.isLoading ? (
-          <Loader />
+      {isLoading || imagesIsLoading || firestoreState.isLoading ? (
+        <Loader />
       ) : isError ? (
         <Error />
       ) : (
@@ -70,20 +94,27 @@ const GameDetails = () => {
           <div className="flex justify-between items-center py-5">
             <div>
               <Link to={"/games"}>
-                <span className="flex items-center gap-2 text-2xl font-semibold text-white hover:text-primary transition-colors duration-200">
+                <span className="flex items-center gap-2 text-xs md:text-lg lg:text-2xl font-semibold text-white hover:text-primary transition-colors duration-200">
                   <FaArrowLeft />
                   Store
                 </span>
               </Link>
             </div>
             <div>
-              <h1 className="text-6xl font-extrabold text-white">
+              <h1 className="text-xs md:text-lg lg:text-2xl xl:text-4xl 2xl:text-6xl font-extrabold text-white">
                 {data.name}
               </h1>
             </div>
           </div>
           <div className="grid grid-cols-12 gap-8 mb-3 md:mb-0">
-            <div className="col-span-12 lg:col-span-8 bg-purple-600 rounded-2xl h-[700px]"></div>
+            <div className="col-span-12 lg:col-span-8 rounded-2xl aspect-video">
+              <Carousel
+                slideInterval={5000}
+                className="text-red dark:text-red-800 custom-button"
+              >
+                {imagesList}
+              </Carousel>
+            </div>
             <div className="col-span-12 lg:col-span-4 flex flex-col justify-between gap-8">
               <div>
                 <div className="relative">
@@ -103,7 +134,12 @@ const GameDetails = () => {
                     <ul className="flex flex-col text-sm leading-loose font-medium text-zinc-400">
                       <li>
                         website:{" "}
-                        <a href={data.website} className="link" target={"_blank"} rel="noopener noreferrer">
+                        <a
+                          href={data.website}
+                          className="link"
+                          target={"_blank"}
+                          rel="noopener noreferrer"
+                        >
                           {data.website}
                         </a>
                       </li>
@@ -155,17 +191,22 @@ const GameDetails = () => {
                     onClick={() => handleHeartClick(obj, "wishlist", data.name)}
                   />
                 </div>
-                {firestoreState.cartItems.data().games.find(game => game.id == id)
-                ? <span className="flex items-center gap-2 text-xl font-semibold text-success">
-                  Added
-                  <FaCheck />
-                </span>
-              : <button className="flex items-center gap-2 text-xl font-semibold text-zinc-400 hover:text-primary transition-colors duration-200"
-              onClick={() => handleCartClick("orders", "add", obj)}
-              >
-                Add to cart
-                <FaPlus />
-              </button>}
+                {firestoreState.cartItems
+                  .data()
+                  .games.find((game) => game.id == id) ? (
+                  <span className="flex items-center gap-2 text-xl font-semibold text-success">
+                    Added
+                    <FaCheck />
+                  </span>
+                ) : (
+                  <button
+                    className="flex items-center gap-2 text-xl font-semibold text-zinc-400 hover:text-primary transition-colors duration-200"
+                    onClick={() => handleCartClick("orders", "add", obj)}
+                  >
+                    Add to cart
+                    <FaPlus />
+                  </button>
+                )}
               </div>
             </div>
           </div>
