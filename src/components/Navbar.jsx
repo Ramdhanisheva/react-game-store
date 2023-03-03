@@ -70,9 +70,9 @@ const Navbar = ({ dispatch }) => {
               />
             </svg>
             <span className="badge badge-sm badge-success indicator-item">
-              {!firestoreState.isLoading &&
-                firestoreState.cartItems &&
-                firestoreState.cartItems.data().games.length}
+              {!firestoreState.isLoading && firestoreState.cartItems
+                ? firestoreState.cartItems.data().games.length
+                : 0}
             </span>
           </div>
         </label>
