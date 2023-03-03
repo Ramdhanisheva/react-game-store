@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
@@ -8,17 +8,20 @@ import Signup from "./pages/Signup";
 import Games from "./pages/Games";
 import GameDetails from "./pages/GameDetails";
 import Drawer from "./components/Drawer";
+import { motion, AnimatePresence } from "framer-motion";
 
 const App = () => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
+  const location = useLocation()
 
   const RequireAuth = ({ children }) => {
     return user ? children : navigate("/login");
   };
 
   return (
-    <Routes>
+    <AnimatePresence>
+    <Routes key={location.pathname} location={location}>
       <Route
         path="/"
         element={
@@ -54,6 +57,7 @@ const App = () => {
         />
       </Route>
     </Routes>
+    </AnimatePresence>
   );
 };
 

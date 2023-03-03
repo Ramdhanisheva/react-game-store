@@ -1,16 +1,35 @@
-import React from "react";
-import Navbar from "../../components/Navbar";
-import Carousel from "../../components/Carousel/Carousel";
+import { motion } from "framer-motion";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import Carousel from "../../components/Carousel/Carousel";
+import Navbar from "../../components/Navbar";
 import { AuthContext } from "../../context/AuthContext";
 
 const Home = () => {
   const { user, dispatch } = useContext(AuthContext);
   console.log(user);
 
+  const animation = {
+    in: { opacity: 0, x: -150 },
+    animate: {
+      opacity: 1,
+      x: 0,
+      transition: { x: { type: "spring", duration: 1, bounce: 0.4 } },
+    },
+    out: {
+      opacity: 0,
+      x: -150,
+      transition: { x: { type: "just", duration: 0.4 } },
+    },
+  };
+
   return (
-    <>
+    <motion.div
+      variants={animation}
+      initial={"in"}
+      animate={"animate"}
+      exit={"out"}
+    >
       <div className="mx-4 md:mx-6 lg:mx-10 4xl:max-w-[1980px] 4xl:mx-auto">
         <Navbar />
       </div>
@@ -46,7 +65,7 @@ const Home = () => {
         </ul>
         <Carousel />
       </div>
-    </>
+    </motion.div>
   );
 };
 
