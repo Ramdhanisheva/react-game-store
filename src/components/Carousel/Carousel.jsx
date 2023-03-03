@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { fetchGames } from "../../utils/fetchGames";
 import useCarousel from "./useCarousel";
+import { motion } from "framer-motion"
 
 const Carousel = () => {
   const [state, dispatch] = useCarousel();
@@ -49,21 +50,16 @@ const Carousel = () => {
     }
   }, [carouselRef.current, loading]);
 
-  // useEffect(() => {
-  //   if (true) {
-  //     intervalRef.current = setInterval(() => {
-  //       // console.log(progressBar)
-  //       if (progressBar >= 100) {
-  //         dispatch({type: "SCROLL_SLIDE", payload: [slideIndex, slideGames.length, carouselRef, "forward"]})
-  //       } else {
-  //         dispatch({type: "SET_PROGRESS_BAR", payload: 0.2})
-  //       }
-  //     }, 5)
-  //   }
-  //   return () => {
-  //     clearInterval(intervalRef.current)
-  //   }
-  // })
+  useEffect(() => {
+    intervalRef.current = setInterval(() => {
+      dispatch({type: "SCROLL_SLIDE", payload: [slideIndex, slideGames.length, carouselRef, "forward"]})
+    }, 8000)
+  
+    return () => {
+      clearInterval(intervalRef.current)
+    }
+  }, [slideGames, slideIndex])
+  
 
   const images =
     !loading &&
@@ -105,6 +101,9 @@ const Carousel = () => {
               ❯
             </button>
           </div>
+          {/* <div className="h-[10px] w-[100px] bg-primary z-10 self-end absolute"></div> */}
+          {game.name == slideName && <motion.div className="h-[6px] bg-primary z-10 self-end absolute rounded-xl" initial={{width: 0}} animate={{width: '100%'}} transition={{duration: 8}} exit={{opacity: 0}} />}
+
         </div>
       );
     });
@@ -129,7 +128,6 @@ const Carousel = () => {
             <div className="col-span-7 font-medium   font-md truncate h-min self-center">
               <span className="text-base">{game.name}</span>
             </div>
-            {/* </Link> */}
           </div>
         </Link>
       );
@@ -147,15 +145,9 @@ const Carousel = () => {
               >
                 {images}
               </div>
-              <span className="text-4xl font-bold text-white absolute p-12 self-end bottom-10">
+              <span className="text-4xl font-bold text-white absolute p-14 self-end bottom-0">
                 {slideName}
               </span>
-
-              <progress
-                className="progress progress-primary w-full transition-all ease-in-out duration-200"
-                value={progressBar}
-                max="100"
-              ></progress>
             </>
           )}
         </div>
