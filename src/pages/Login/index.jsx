@@ -16,7 +16,7 @@ const Login = () => {
   const { dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  async function signIn({email, password}) {
+  async function signIn({email, password, isRemember}) {
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -28,12 +28,12 @@ const Login = () => {
       dispatch({
         type: "login",
         payload: user,
-        isRemember: formJson.isRemember || false,
+        isRemember: isRemember || false,
       });
       navigate("/");
     } catch (error) {
       setIsError(true);
-      console.log(errorCode, errorMessage);
+      console.log(error.code, error.message);
     }
   }
 
