@@ -11,7 +11,6 @@ const initialState = {
   slideGames: null,
   slideIndex: null,
   slideName: "",
-  progressBar: null,
   loading: true,
   error: false,
 };
@@ -31,7 +30,6 @@ const reducer = (state, action) => {
         ...state,
         slideIndex: 0,
         slideName: state.slideGames[0].name,
-        progressBar: 0,
       };
     case "SCROLL_SLIDE":
       const [index, quantity, ref, direction] = action.payload;
@@ -47,12 +45,6 @@ const reducer = (state, action) => {
         ...state,
         slideIndex: newIndex,
         slideName: state.slideGames[newIndex].name,
-        progressBar: 0,
-      };
-    case "SET_PROGRESS_BAR":
-      return {
-        ...state,
-        progressBar: state.progressBar + action.payload,
       };
     case "SET_ERROR":
       return {
