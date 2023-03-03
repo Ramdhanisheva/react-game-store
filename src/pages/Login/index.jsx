@@ -16,6 +16,27 @@ const Login = () => {
   const { dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  async function signIn({email, password}) {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      console.log(user);
+      dispatch({
+        type: "login",
+        payload: user,
+        isRemember: formJson.isRemember || false,
+      });
+      navigate("/");
+    } catch (error) {
+      setIsError(true);
+      console.log(errorCode, errorMessage);
+    }
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -23,29 +44,7 @@ const Login = () => {
     const formJson = Object.fromEntries(formData.entries());
     console.log(formJson);
 
-    async function signIn() {
-      try {
-        const userCredential = await signInWithEmailAndPassword(
-          auth,
-          formJson.email,
-          formJson.password
-        );
-        const user = userCredential.user;
-        console.log(user);
-        dispatch({
-          type: "login",
-          payload: user,
-          isRemember: formJson.isRemember || false,
-        });
-        navigate("/");
-      } catch (error) {
-        setIsError(true);
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      }
-    }
-    signIn();
+    signIn(formJson);
   };
 
   useEffect(() => {
