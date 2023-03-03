@@ -42,41 +42,43 @@ const FirestoreContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { user } = useContext(AuthContext);
   useEffect(() => {
-    const wishlistQuery = query(
-      collection(db, "wishlist"),
-      where("user", "==", user.uid)
-    );
-    const ordersQuery = query(
-      collection(db, "orders"),
-      where("user", "==", user.uid)
-    );
-
-    const unsubWishlist = onSnapshot(wishlistQuery, (snapshot) => {
-      const data = [];
-      snapshot.docs.forEach((doc) => {
-        data.push(doc);
-      });
-      dispatch({ type: "UPDATE_WISHLIST", payload: data });
-    });
-
-    const unsubOrders = onSnapshot(ordersQuery, (snapshot) => {
-      const ordersDocs = snapshot.docs.filter(
-        (doc) => doc.data().isCompleted == true
+    if (user) {
+      const wishlistQuery = query(
+        collection(db, "wishlist"),
+        where("user", "==", user?.uid)
       );
-      const cartItemsDocs = snapshot.docs.filter(
-        (doc) => doc.data().isCompleted == false
+      const ordersQuery = query(
+        collection(db, "orders"),
+        where("user", "==", user?.uid)
       );
-
-      dispatch({
-        type: "UPDATE_ORDERS",
-        payload: { ordersDocs: ordersDocs, cartItemsDocs: cartItemsDocs },
+  
+      const unsubWishlist = onSnapshot(wishlistQuery, (snapshot) => {
+        const data = [];
+        snapshot.docs.forEach((doc) => {
+          data.push(doc);
+        });
+        dispatch({ type: "UPDATE_WISHLIST", payload: data });
       });
-    });
-
-    return () => {
-      unsubWishlist();
-      unsubOrders();
-    };
+  
+      const unsubOrders = onSnapshot(ordersQuery, (snapshot) => {
+        const ordersDocs = snapshot.docs.filter(
+          (doc) => doc.data().isCompleted == true
+        );
+        const cartItemsDocs = snapshot.docs.filter(
+          (doc) => doc.data().isCompleted == false
+        );
+  
+        dispatch({
+          type: "UPDATE_ORDERS",
+          payload: { ordersDocs: ordersDocs, cartItemsDocs: cartItemsDocs },
+        });
+      });
+  
+      return () => {
+        unsubWishlist();
+        unsubOrders();
+      };
+    }
   }, []);
 
   return (
