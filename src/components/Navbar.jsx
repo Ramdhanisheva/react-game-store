@@ -30,7 +30,7 @@ const Navbar = ({ dispatch }) => {
         <input
           type="text"
           placeholder="Search games..."
-          className="input bg-zinc-800 focus:bg-[#343438] text-sm transition-all ease-in-out duration-200 w-full md:w-3/6 focus:w-full input-sm"
+          className="input input-ghost bg-zinc-800 border-0 focus:border-0 focus:ring-0 focus:bg-[#343438] text-sm transition-all ease-in-out duration-200 w-full md:w-3/6 focus:w-full input-sm"
           onChange={(e) => handleOnChange(e)}
         />
         <div className="ml-3 text-zinc-400 hover:text-white active:scale-90 transition ease-in-out cursor-pointer">
