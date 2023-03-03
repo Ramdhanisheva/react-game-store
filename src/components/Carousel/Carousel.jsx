@@ -1,21 +1,13 @@
+import { motion } from "framer-motion";
 import React, { useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { fetchGames } from "../../utils/fetchGames";
 import useCarousel from "./useCarousel";
-import { motion } from "framer-motion"
 
 const Carousel = () => {
   const [state, dispatch] = useCarousel();
   const navigate = useNavigate();
-  const {
-    games,
-    slideGames,
-    slideIndex,
-    slideName,
-    progressBar,
-    loading,
-    error,
-  } = state;
+  const { slideGames, slideIndex, slideName, loading, error } = state;
   const carouselRef = useRef(null);
   const intervalRef = useRef(null);
 
@@ -52,14 +44,16 @@ const Carousel = () => {
 
   useEffect(() => {
     intervalRef.current = setInterval(() => {
-      dispatch({type: "SCROLL_SLIDE", payload: [slideIndex, slideGames.length, carouselRef, "forward"]})
-    }, 8000)
-  
+      dispatch({
+        type: "SCROLL_SLIDE",
+        payload: [slideIndex, slideGames.length, carouselRef, "forward"],
+      });
+    }, 8000);
+
     return () => {
-      clearInterval(intervalRef.current)
-    }
-  }, [slideGames, slideIndex])
-  
+      clearInterval(intervalRef.current);
+    };
+  }, [slideGames, slideIndex]);
 
   const images =
     !loading &&
@@ -69,7 +63,7 @@ const Carousel = () => {
         <div
           id={`slide` + index}
           className="carousel-item relative w-full cursor-pointer"
-          key={index}
+          key={`slide` + game.id}
         >
           <img
             src={game.background_image}
@@ -101,9 +95,14 @@ const Carousel = () => {
               ❯
             </button>
           </div>
-          {/* <div className="h-[10px] w-[100px] bg-primary z-10 self-end absolute"></div> */}
-          {game.name == slideName && <motion.div className="h-[6px] bg-primary z-10 self-end absolute rounded-xl" initial={{width: 0}} animate={{width: '100%'}} transition={{duration: 8}} exit={{opacity: 0}} />}
-
+          {game.name == slideName && (
+            <motion.div
+              className="h-[6px] bg-primary z-10 self-end absolute rounded-xl"
+              initial={{ width: 0 }}
+              animate={{ width: "100%" }}
+              transition={{ duration: 8 }}
+            />
+          )}
         </div>
       );
     });
