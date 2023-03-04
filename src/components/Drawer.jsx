@@ -98,6 +98,7 @@ const Drawer = ({ children }) => {
               direction="right"
               duration={1}
               distance={50}
+              bounce={0.5}
             >
               {cartList}
             </Transition>
