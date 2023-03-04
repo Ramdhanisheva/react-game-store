@@ -18,10 +18,11 @@ const CartContextProvider = ({ children }) => {
       if (!firestoreState.cartItems) {
         const obj = {
           isCompleted: false,
-          user: game.user,
+          user: user.uid,
           games: [game],
         };
 
+        console.log(obj);
         firestoreDispatch({ type: "UPDATE_IS_LOADING", payload: true });
         createDoc(obj, docCollection);
       } else {
