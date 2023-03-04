@@ -7,6 +7,7 @@ import Card from "./Card";
 import filters from "./filters";
 import { initialState, reducer } from "./GameReducer";
 import genres from "./genres";
+import Transition from "../../components/Transition";
 
 const Games = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -144,7 +145,7 @@ const Games = () => {
   });
 
   return (
-    <>
+    <Transition direction="right" duration={1} distance={100} >
       <div className="mx-4 md:mx-6 lg:mx-10 4xl:max-w-[1980px] 4xl:mx-auto">
         <Navbar dispatch={dispatch} />
         <div className="grid grid-cols-12 mt-8 relative">
@@ -223,7 +224,7 @@ const Games = () => {
           </div>
         </div>
       </div>
-    </>
+    </Transition>
   );
 };
 

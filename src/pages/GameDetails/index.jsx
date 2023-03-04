@@ -14,6 +14,8 @@ import Navbar from "../../components/Navbar";
 import Spinner from "../../components/Spinner";
 import { CartContext } from "../../context/CartContext";
 import { FirestoreContext } from "../../context/FirestoreContext";
+import getPrice from "../../utils/getPrice";
+import Transition from "../../components/Transition";
 
 const GameDetails = () => {
   const { state: firestoreState, dispatch: firestoreDispatch } =
@@ -44,7 +46,6 @@ const GameDetails = () => {
         `https://api.rawg.io/api/games/${id}/screenshots?key=da8b78f38c134484a249b5f177270923`
       ).then((res) => res.json()),
   });
-
   console.log(dataImages);
 
   const obj = !isLoading &&
@@ -57,13 +58,13 @@ const GameDetails = () => {
       released: data.released,
       genres: data.genres,
     };
+    console.log(obj)
+
 
   const imagesList =
     !imagesIsLoading &&
     !imagesIsError &&
     dataImages.results.map((screenshot, index) => {
-      console.log(screenshot);
-
       return <img src={screenshot.image} alt="..." key={index} className="aspect-video" />;
     });
 
@@ -83,6 +84,7 @@ const GameDetails = () => {
     );
   };
   return (
+    <Transition direction="left" duration={1} distance={100} >
     <div className="flex flex-col min-h-screen mx-4 md:mx-6 lg:mx-10 4xl:max-w-[1980px] 4xl:mx-auto overflow-visible">
       <Navbar />
       {isLoading || imagesIsLoading || firestoreState.isLoading ? (
@@ -110,7 +112,7 @@ const GameDetails = () => {
             <div className="col-span-12 lg:col-span-8 rounded-2xl aspect-video">
               <Carousel
                 slideInterval={5000}
-                className="text-red dark:text-red-800 custom-button"
+                className="custom-button"
               >
                 {imagesList}
               </Carousel>
@@ -131,6 +133,7 @@ const GameDetails = () => {
 
                 <div className="flex flex-col px-8 py-6 bg-[#2d2d2e] rounded-b-2xl">
                   {!toggle && (
+                    <Transition direction="up" duration={1} distance={50} bounce={0.4} >
                     <ul className="flex flex-col text-sm leading-loose font-medium text-zinc-400">
                       <li>
                         website:{" "}
@@ -167,6 +170,7 @@ const GameDetails = () => {
                           .join(", ")}
                       </li>
                     </ul>
+                    </Transition>
                   )}
                   <button
                     className="flex self-end items-center first-of-type:font-medium gap-2"
@@ -179,7 +183,7 @@ const GameDetails = () => {
               </div>
               <div className="flex justify-between p-5 bg-[#222222] rounded-2xl order-first lg:order-last">
                 <div className="flex gap-4 items-center text-zinc-400">
-                  <span className="font-bold text-lg">$23.93</span>
+                  <span className="font-bold text-lg">${getPrice(data.name)}</span>
                   <FaHeart
                     className={`text-2xl transition-colors duration-200 cursor-pointer ${
                       firestoreState.wishlist.find(
@@ -191,7 +195,7 @@ const GameDetails = () => {
                     onClick={() => handleHeartClick(obj, "wishlist", data.name)}
                   />
                 </div>
-                {firestoreState.cartItems
+                {firestoreState.cartItems && firestoreState.cartItems
                   .data()
                   .games.find((game) => game.id == id) ? (
                   <span className="flex items-center gap-2 text-xl font-semibold text-success">
@@ -213,6 +217,7 @@ const GameDetails = () => {
         </>
       )}
     </div>
+    </Transition>
   );
 };
 
