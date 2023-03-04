@@ -40,7 +40,7 @@ const GameDetails = () => {
     isError: imagesIsError,
     data: dataImages,
   } = useQuery({
-    queryKey: ["screenshots"],
+    queryKey: [`screenshot-${id}`],
     queryFn: () =>
       fetch(
         `https://api.rawg.io/api/games/${id}/screenshots?key=da8b78f38c134484a249b5f177270923`
@@ -87,7 +87,7 @@ const GameDetails = () => {
     <Transition direction="left" duration={1} distance={100} >
     <div className="flex flex-col min-h-screen mx-4 md:mx-6 lg:mx-10 4xl:max-w-[1980px] 4xl:mx-auto overflow-visible">
       <Navbar />
-      {isLoading || imagesIsLoading || firestoreState.isLoading ? (
+      {isLoading || imagesIsLoading ? (
         <Loader />
       ) : isError ? (
         <Error />
@@ -186,7 +186,7 @@ const GameDetails = () => {
                   <span className="font-bold text-lg">${getPrice(data.name)}</span>
                   <FaHeart
                     className={`text-2xl transition-colors duration-200 cursor-pointer ${
-                      firestoreState.wishlist.find(
+                      !firestoreState.isLoading && firestoreState.wishlist.find(
                         (game) => game.data().id == id
                       )
                         ? "text-red-500"
@@ -195,7 +195,7 @@ const GameDetails = () => {
                     onClick={() => handleHeartClick(obj, "wishlist", data.name)}
                   />
                 </div>
-                {firestoreState.cartItems && firestoreState.cartItems
+                {!firestoreState.isLoading && firestoreState.cartItems && firestoreState.cartItems
                   .data()
                   .games.find((game) => game.id == id) ? (
                   <span className="flex items-center gap-2 text-xl font-semibold text-success">
