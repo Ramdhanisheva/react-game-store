@@ -9,12 +9,16 @@ import { useContext } from "react";
 import handleGoogleAuth from "../../utils/googleOAuth";
 
 const Login = () => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+  // Redirect to if user is authenticated
+  user && navigate("/")
+
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [isRemember, setIsRemember] = useState(true);
   const [isError, setIsError] = useState(false);
   const { dispatch } = useContext(AuthContext);
-  const navigate = useNavigate();
 
   async function signIn({email, password, isRemember}) {
     try {

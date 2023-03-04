@@ -1,15 +1,20 @@
 import React from "react";
 import { FaGamepad, FaGoogle } from "react-icons/fa";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useReducer } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../utils/firebase";
-import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { useContext, useEffect } from "react";
 import handleGoogleAuth from "../../utils/googleOAuth";
 
 const Signup = () => {
+  const { user } = useContext(AuthContext)
+  const navigate = useNavigate()
+
+  // Redirect user if is authenticated
+  user && navigate("/")
+
   const initialState = { email: null, password: null, isError: null };
 
   const reducer = (state, action) => {
@@ -30,7 +35,6 @@ const Signup = () => {
   const { dispatch: loginDispatch } = useContext(AuthContext);
   const [state, dispatch] = useReducer(reducer, initialState);
   const { email, password, confirmPassword, isError } = state;
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
