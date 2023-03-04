@@ -4,6 +4,8 @@ const Transition = ({
   direction = "none",
   duration = 1,
   distance = 50,
+  bounce = 0.4,
+  styles,
   children,
 }) => {
   const directions = {
@@ -17,12 +19,12 @@ const Transition = ({
   const transitionIn = {
     x: {
       type: "spring",
-      bounce: 0.4,
+      bounce: bounce,
       duration: duration,
     },
     y: {
       type: "spring",
-      bounce: 0.4,
+      bounce: bounce,
       duration: duration,
     },
   };
@@ -58,6 +60,7 @@ const Transition = ({
       initial={"in"}
       animate={"animate"}
       exit={"out"}
+      className={styles}
     >
       {children}
     </motion.div>
