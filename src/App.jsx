@@ -16,11 +16,11 @@ const App = () => {
   const location = useLocation()
 
   const RequireAuth = ({ children }) => {
-    return user ? children : navigate("/login");
+    return user ? children : navigate("/auth/login");
   };
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
     <Routes key={location.pathname} location={location}>
       <Route
         path="/"

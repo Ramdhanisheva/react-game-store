@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Carousel from "../../components/Carousel/Carousel";
 import Navbar from "../../components/Navbar";
 import { AuthContext } from "../../context/AuthContext";
+import Transition from "../../components/Transition";
 
 const Home = () => {
   const { user, dispatch } = useContext(AuthContext);
@@ -24,11 +25,7 @@ const Home = () => {
   };
 
   return (
-    <motion.div
-      variants={animation}
-      initial={"in"}
-      animate={"animate"}
-      exit={"out"}
+    <Transition direction="left" duration={1} distance={100}
     >
       <div className="mx-4 md:mx-6 lg:mx-10 4xl:max-w-[1980px] 4xl:mx-auto">
         <Navbar />
@@ -65,7 +62,7 @@ const Home = () => {
         </ul>
         <Carousel />
       </div>
-    </motion.div>
+    </Transition>
   );
 };
 
