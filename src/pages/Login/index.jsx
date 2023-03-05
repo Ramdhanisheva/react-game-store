@@ -20,7 +20,7 @@ const Login = () => {
   const [isError, setIsError] = useState(false);
   const { dispatch } = useContext(AuthContext);
 
-  async function signIn({email, password, isRemember}) {
+  async function signIn({email, password, remember}) {
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -32,9 +32,12 @@ const Login = () => {
       dispatch({
         type: "login",
         payload: user,
-        isRemember: isRemember || false,
+        isRemember: remember || false,
       });
-      navigate("/");
+      // navigate("/");
+      setTimeout(() => {
+        navigate("/");
+      }, 500)
     } catch (error) {
       setIsError(true);
       console.log(error.code, error.message);
