@@ -40,10 +40,10 @@ const Home = () => {
           {!user ? (
             <>
               <li className="text-white hover:text-white transition-colors ease-in-out duration-200">
-                <Link to="/auth/login">Login</Link>
+                <Link to="/auth/login" data-test-id="login">Login</Link>
               </li>
               <li className="text-white hover:text-white transition-colors ease-in-out duration-200">
-                <Link to="/auth/signup">Sign up</Link>
+                <Link to="/auth/signup" data-test-id="sign-up">Sign up</Link>
               </li>
             </>
           ) : (
@@ -54,7 +54,7 @@ const Home = () => {
                   dispatch({ type: "logout" });
                 }}
               >
-                <Link to="/auth/login">Logout</Link>
+                <Link to="/auth/login" data-test-id="logout">Logout</Link>
               </li>
               <span className="text-white">{user.email}</span>
             </>
