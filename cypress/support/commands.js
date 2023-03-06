@@ -25,5 +25,16 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 Cypress.Commands.add('getBySel', (selector) => {
-  return cy.get(`[data-test-id="${selector}]`);
+  return cy.get(`[data-test-id="${selector}"]`);
+})
+
+Cypress.Commands.add("login", (remembered) => {
+  cy.get("input[name=email]").type("isenahemmanuel@gmail.com");
+  cy.get("input[name=password]").type("makepassword");
+  if (!remembered) {
+    cy.get("input[name=remember").click();
+    cy.get("button[type=submit]").click();
+  } else {
+    cy.get("button[type=submit]").click();
+  }
 })
