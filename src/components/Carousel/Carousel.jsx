@@ -53,7 +53,7 @@ const Carousel = () => {
     return () => {
       clearInterval(intervalRef.current);
     };
-  }, [slideGames, slideIndex]);
+  }, [slideIndex]);
 
   const images =
     !loading &&
