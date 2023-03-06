@@ -6,7 +6,7 @@ import { fetchGames } from "../../utils/fetchGames";
 import Card from "./Card";
 import filters from "./filters";
 import { initialState, reducer } from "./GameReducer";
-import genres from "./genres";
+import genres from "./genres";  
 import Transition from "../../components/Transition";
 
 const Games = () => {

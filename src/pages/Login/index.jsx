@@ -34,7 +34,6 @@ const Login = () => {
         payload: user,
         isRemember: remember || false,
       });
-      // navigate("/");
       setTimeout(() => {
         navigate("/");
       }, 500)
