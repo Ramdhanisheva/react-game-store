@@ -186,16 +186,19 @@ const GameDetails = () => {
                   <span className="font-bold text-lg">${getPrice(data.name)}</span>
                   <FaHeart
                     className={`text-2xl transition-colors duration-200 cursor-pointer ${
-                      !firestoreState.isLoading && firestoreState.wishlist.find(
+                      !firestoreState.isLoading 
+                        ? firestoreState.wishlist && firestoreState.wishlist.find(
                         (game) => game.data().id == id
                       )
                         ? "text-red-500"
                         : "transition-all active:scale-90 hover:text-red-500"
+                      : "cursor-not-allowed btn-disabled"
                     }`}
                     onClick={() => handleHeartClick(obj, "wishlist", data.name)}
                   />
                 </div>
-                {!firestoreState.isLoading && firestoreState.cartItems && firestoreState.cartItems
+                {!firestoreState.isLoading 
+                  ? firestoreState.cartItems && firestoreState.cartItems
                   .data()
                   .games.find((game) => game.id == id) ? (
                   <span className="flex items-center gap-2 text-xl font-semibold text-success">
@@ -210,7 +213,7 @@ const GameDetails = () => {
                     Add to cart
                     <FaPlus />
                   </button>
-                )}
+                ) : <Spinner size={"w-6 h-6"} />}
               </div>
             </div>
           </div>

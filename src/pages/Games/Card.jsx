@@ -14,6 +14,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { CartContext } from "../../context/CartContext";
 import { FirestoreContext } from "../../context/FirestoreContext";
 import getPrice from "../../utils/getPrice";
+import Spinner from "../../components/Spinner";
 
 const Card = ({
   id,
@@ -90,7 +91,7 @@ const Card = ({
                   )
                   ? "p-3 bg-black absolute top-3 right-3 rounded-full text-red-500 transition-colors"
                   : "p-3 bg-black absolute top-3 right-3 rounded-full text-white transition-all active:scale-90 hover:text-red-500"
-                : "p-3 bg-black absolute top-3 right-3 rounded-full text-white btn-disabled"
+                : "p-3 bg-black absolute top-3 right-3 rounded-full text-white btn-disabled cursor-not-allowed"
             }
             onClick={() => handleHeartClick(obj, "wishlist", name)}
           >
@@ -99,11 +100,12 @@ const Card = ({
         </figure>
         <div className="p-5">
           <div className="flex justify-between text-white py-1">
-            {!firestoreState.isLoading &&
-            firestoreState.cartItems &&
-            firestoreState.cartItems
-              .data()
-              .games.find((game) => game.name === name) ? (
+            {firestoreState.isLoading 
+              ? <Spinner size="w-4 h-4" />
+              : firestoreState.cartItems &&
+              firestoreState.cartItems
+                .data()
+                .games.find((game) => game.name === name) ? (
               <div className="flex items-center text-success transition-colors cursor-default">
                 <span className="text-sm font-semibold mr-2">Added</span>
                 <FaCheck />
