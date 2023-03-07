@@ -33,7 +33,7 @@ const Home = () => {
       <div className="container mx-auto px-4">
         <ul className="flex items-center py-8 gap-7 text-sm font-medium">
           <li className="text-white/50 hover:text-white transition-colors ease-in-out duration-300">
-            <Link to="/games" className="">
+            <Link to="/games" className="" data-test-id="browse">
               Browse
             </Link>
           </li>

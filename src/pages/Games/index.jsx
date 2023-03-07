@@ -82,7 +82,7 @@ const Games = () => {
 
   const handleFilterClick = (filter) => {
     console.log(`Sort by ${filter}`);
-    if (!firestoreState.isLoading) {
+    if (!firestoreState.isLoading || filter == "release date" || filter == "metacritic") {
       dispatch({ type: "SET_CURRENT_SELECTED_IS_FILTER_BY", payload: filter });
       filterSort(filter);
     }
@@ -100,6 +100,7 @@ const Games = () => {
         key={index}
         className="cursor-pointer group disabled"
         onClick={() => handleFilterClick(filter.name)}
+        data-test-id={`sort-by-${filter.name}`}
       >
         <button className="flex text-lg p-1">
           <div
@@ -188,7 +189,7 @@ const Games = () => {
                 Clear filter
               </button>
             </div>
-            <div className="grid grid-cols-12 gap-6 p-4">
+            <div className="grid grid-cols-12 gap-6 p-4" data-test-id="cards">
               {searchQuery == ""
                 ? games &&
                   games.map((game, index) => (

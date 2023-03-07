@@ -71,7 +71,7 @@ const Card = ({
   return (
     <div
       className="card card-compact col-span-12 md:col-span-6 lg:col-span-4 2xl:col-span-3 h-fit bg-zinc-800 shadow-xl transition-all hover:bg-zinc-700/[.55] hover:scale-[1.02] duration-300"
-      key={id}
+      key={id} data-test-id={`card-${id}`}
     >
       <motion.div
         variants={animation}
@@ -142,7 +142,7 @@ const Card = ({
             </div>
           </div>
           <ul className="text-xs text-zinc-400">
-            <li>Released: {released}</li>
+            <li data-test-id="released">Released: {released}</li>
             <li>Genres: {genreList}</li>
           </ul>
         </div>
