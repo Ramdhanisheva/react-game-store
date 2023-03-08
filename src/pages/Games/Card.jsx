@@ -126,7 +126,7 @@ const Card = ({
           <div className="flex justify-between gap-2">
             <span className="card-title text-white font-bold">{name}</span>
             <div className={metacriticStyles}>
-              <span className="text-xs">{metacritic}</span>
+              <span className="text-xs" data-test-id="metacritic">{metacritic}</span>
             </div>
           </div>
           <div className="flex justify-between my-2 text-white">
