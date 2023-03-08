@@ -7,12 +7,18 @@ import { auth } from "../../utils/firebase";
 import { AuthContext } from "../../context/AuthContext";
 import { useContext, useEffect } from "react";
 import handleGoogleAuth from "../../utils/googleOAuth";
+import Transition from "../../components/Transition";
 
 const Signup = () => {
   const { user } = useContext(AuthContext)
   const navigate = useNavigate()
 
-  // Redirect user if is authenticated
+  useEffect(() => {
+    // Redirect to home page if user is authenticated
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);  // Redirect user if is authenticated
   user && navigate("/")
 
   const initialState = { email: null, password: null, isError: null };
@@ -59,7 +65,7 @@ const Signup = () => {
   };
 
   return (
-    <section className="bg-gray-50 dark:bg-zinc-900">
+    <Transition styles="bg-gray-50 dark:bg-zinc-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <a
           href="#"
@@ -178,7 +184,7 @@ const Signup = () => {
           </div>
         </div>
       </div>
-    </section>
+    </Transition>
   );
 };
 

@@ -7,12 +7,19 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { useContext } from "react";
 import handleGoogleAuth from "../../utils/googleOAuth";
+import Transition from "../../components/Transition";
 
 const Login = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  // Redirect to if user is authenticated
-  user && navigate("/")
+  
+  useEffect(() => {
+    // Redirect to home page if user is authenticated
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
+  
 
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
@@ -34,9 +41,7 @@ const Login = () => {
         payload: user,
         isRemember: remember || false,
       });
-      setTimeout(() => {
-        navigate("/");
-      }, 500)
+      navigate("/")
     } catch (error) {
       setIsError(true);
       console.log(error.code, error.message);
@@ -58,7 +63,7 @@ const Login = () => {
   }, [email, password, , isRemember]);
 
   return (
-    <section className="bg-gray-50 dark:bg-zinc-900">
+    <Transition styles="bg-gray-50 dark:bg-zinc-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <a
           href="#"
@@ -182,7 +187,7 @@ const Login = () => {
           </div>
         </div>
       </div>
-    </section>
+    </Transition>
   );
 };
 
