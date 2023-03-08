@@ -67,7 +67,6 @@ const FirestoreContextProvider = ({ children }) => {
         const cartItemsDocs = snapshot.docs.filter(
           (doc) => doc.data().isCompleted == false
         );
-  
         dispatch({
           type: "UPDATE_ORDERS",
           payload: { ordersDocs: ordersDocs, cartItemsDocs: cartItemsDocs },
@@ -79,7 +78,7 @@ const FirestoreContextProvider = ({ children }) => {
         unsubOrders();
       };
     }
-  }, []);
+  }, [user]);
 
   return (
     <FirestoreContext.Provider value={{ state: state, dispatch }}>

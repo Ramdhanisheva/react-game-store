@@ -12,7 +12,7 @@ import Transition from "../../components/Transition";
 const Login = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     // Redirect to home page if user is authenticated
     if (user) {
