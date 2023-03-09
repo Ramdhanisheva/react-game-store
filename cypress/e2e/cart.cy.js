@@ -64,4 +64,25 @@ describe("cart", () => {
       });
     });
   });
+
+  it.only("should complte checkout", () => {
+    let titleName;
+    let completed = false;
+    cy.get('label[data-test-id="drawer"]').click();
+    cy.get('[data-test-id="checkout"]').click();
+
+    cy.wait(4000).then(async () => {
+      const querySnapshot = query(
+        collection(db, "orders"),
+        where("user", "==", "WFPEIf4SlChZt4dAoAL4bvmKYFa2")
+      );
+      getDocs(querySnapshot).then((querySnapshot) => {
+        if (querySnapshot.docs[0].data().isCompleted) {
+          completed = true;
+        }
+        expect(completed).to.be.true;
+      });
+      cy.url().should("eq", "http://localhost:5173/#/");
+    });
+  });
 });

@@ -110,6 +110,8 @@ const Drawer = ({ children }) => {
               <Link
                 to="/"
                 className="flex gap-2 items-center align-middle text-white hover:text-primary text-xl font-semibold transition-colors duration-200"
+                onClick={() => {handleCartClick("orders", "complete_order")}}
+                data-test-id="checkout"
               >
                 <span className="">Checkout</span>
                 <FaArrowRight />
