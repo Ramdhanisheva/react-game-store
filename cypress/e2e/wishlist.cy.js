@@ -7,36 +7,67 @@ describe("wishlist", () => {
     cy.login(true);
     cy.wait(2000);
     cy.getBySel("browse").click();
-    cy.wait(3000);
-  })
+    cy.wait(2000);
+  });
 
   it("should add to wishlist", () => {
-    let titleName
-    let found = false
-    cy.get('div[data-test-id^="card-"] button:not(button[data-test-id="wishlist"])')
-      .then((cards) => {
-        const card = cards[0];
-        titleName = card.closest('div[data-test-id^="card-"]').querySelector('[data-test-id="title-name"]').textContent
-        cy.log(titleName)
-        card.click();
-        cy.wait(4000)
+    let titleName;
+    let found = false;
+    cy.get(
+      'div[data-test-id^="card-"] button:not(button[data-test-id="wishlist"])'
+    ).then((cards) => {
+      const card = cards[0];
+      titleName = card
+        .closest('div[data-test-id^="card-"]')
+        .querySelector('[data-test-id="title-name"]').textContent;
+      cy.log(titleName);
+      card.click();
+      cy.wait(4000).then(async () => {
+        const querySnapshot = query(
+          collection(db, "wishlist"),
+          where("user", "==", "WFPEIf4SlChZt4dAoAL4bvmKYFa2")
+        );
+        getDocs(querySnapshot).then((querySnapshot) => {
+          querySnapshot.docs.forEach((doc) => {
+            if (doc.data().name == titleName) {
+              found = true;
+              console.log(found);
+            }
+          });
+          expect(found).to.be.true;
+        });
+      });
+    });
+  });
 
-        .then(async () => {
+  it("should remove from wishlist", () => {
+    let titleName;
+    let removed = true;
+    cy.get('div[data-test-id^="card-"] button[data-test-id="wishlist"]')
+      .first()
+      .then((wishlistButton) => {
+        console.log(wishlistButton);
+        titleName = wishlistButton[0]
+          .closest('div[data-test-id^="card-"]')
+          .querySelector('[data-test-id="title-name"]').textContent;
+        wishlistButton[0].click();
+        cy.wait(4000).then(() => {
           const querySnapshot = query(
             collection(db, "wishlist"),
             where("user", "==", "WFPEIf4SlChZt4dAoAL4bvmKYFa2")
           );
           getDocs(querySnapshot).then((querySnapshot) => {
-            querySnapshot.docs.forEach(doc => {
+            querySnapshot.docs.forEach((doc) => {
               if (doc.data().name == titleName) {
-                found = true
+                console.log(doc.data().name, titleName);
+                removed = false;
               }
             });
-            expect(found).to.be.true;
           });
         });
-
       })
-
-  })
-})
+      .then(() => {
+        expect(removed).to.be.true;
+      });
+  });
+});
