@@ -43,7 +43,14 @@ const CartContextProvider = ({ children }) => {
         games: filteredGames,
       };
       modifyDoc(newObj, docCollection, firestoreState.cartItems.id);
-    } else {
+    } else if (action == "complete_order") {
+      const obj = {
+        ...firestoreState.cartItems.data(),
+        isCompleted: true,
+      }
+      modifyDoc(obj, docCollection, firestoreState.cartItems.id);
+    }
+    else {
       const newObj = {
         ...firestoreState.cartItems.data(),
         games: [],
