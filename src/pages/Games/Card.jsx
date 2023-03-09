@@ -10,11 +10,11 @@ import {
 } from "react-icons/fa";
 import { SiNintendoswitch } from "react-icons/si";
 import { Link } from "react-router-dom";
+import Spinner from "../../components/Spinner";
 import { AuthContext } from "../../context/AuthContext";
 import { CartContext } from "../../context/CartContext";
 import { FirestoreContext } from "../../context/FirestoreContext";
 import getPrice from "../../utils/getPrice";
-import Spinner from "../../components/Spinner";
 
 const Card = ({
   id,
@@ -71,7 +71,8 @@ const Card = ({
   return (
     <div
       className="card card-compact col-span-12 md:col-span-6 lg:col-span-4 2xl:col-span-3 h-fit bg-zinc-800 shadow-xl transition-all hover:bg-zinc-700/[.55] hover:scale-[1.02] duration-300"
-      key={id} data-test-id={`card-${id}`}
+      key={id}
+      data-test-id={`card-${id}`}
     >
       <motion.div
         variants={animation}
@@ -83,26 +84,35 @@ const Card = ({
           <Link to={`/games/${id}`}>
             <img src={image} alt={name} />
           </Link>
-          <button
-            className={
-              !isLoading && firestoreState.wishlist
-                ? firestoreState.wishlist.find(
-                    (game) => game.data().name === name
-                  )
-                  ? "p-3 bg-black absolute top-3 right-3 rounded-full text-red-500 transition-colors"
-                  : "p-3 bg-black absolute top-3 right-3 rounded-full text-white transition-all active:scale-90 hover:text-red-500"
-                : "p-3 bg-black absolute top-3 right-3 rounded-full text-white btn-disabled cursor-not-allowed"
-            }
-            onClick={() => handleHeartClick(obj, "wishlist", name)}
-          >
-            <FaHeart className=" text-sm" />
-          </button>
+          {!firestoreState.isLoading ? (
+            firestoreState.wishlist &&
+            firestoreState.wishlist.find(
+              (game) => game.data().name === name
+            ) ? (
+              <button
+                className="p-3 bg-black absolute top-3 right-3 rounded-full text-red-500 transition-colors"
+                onClick={() => handleHeartClick(obj, "wishlist", name)}
+                data-test-id="wishlist"
+              >
+                <FaHeart className=" text-sm" />
+              </button>
+            ) : (
+              <button
+                className="p-3 bg-black absolute top-3 right-3 rounded-full text-white transition-all active:scale-90 hover:text-red-500"
+                onClick={() => handleHeartClick(obj, "wishlist", name)}
+              >
+                <FaHeart className=" text-sm" />
+              </button>
+            )
+          ) : (
+            <Spinner size={"w-6 h-6"} />
+          )}
         </figure>
         <div className="p-5">
           <div className="flex justify-between text-white py-1">
-            {firestoreState.isLoading 
-              ? <Spinner size="w-4 h-4" />
-              : firestoreState.cartItems &&
+            {firestoreState.isLoading ? (
+              <Spinner size="w-4 h-4" />
+            ) : firestoreState.cartItems &&
               firestoreState.cartItems
                 .data()
                 .games.find((game) => game.name === name) ? (
@@ -124,9 +134,11 @@ const Card = ({
             <span className="font-semibold">${getPrice(name)}</span>
           </div>
           <div className="flex justify-between gap-2">
-            <span className="card-title text-white font-bold">{name}</span>
+            <span className="card-title text-white font-bold" data-test-id="title-name">{name}</span>
             <div className={metacriticStyles}>
-              <span className="text-xs" data-test-id="metacritic">{metacritic}</span>
+              <span className="text-xs" data-test-id="metacritic">
+                {metacritic}
+              </span>
             </div>
           </div>
           <div className="flex justify-between my-2 text-white">
@@ -143,7 +155,7 @@ const Card = ({
           </div>
           <ul className="text-xs text-zinc-400">
             <li data-test-id="released">Released: {released}</li>
-            <li>Genres: {genreList}</li>
+            <li data-test-id="genre">Genres: {genreList}</li>
           </ul>
         </div>
       </motion.div>
@@ -152,3 +164,16 @@ const Card = ({
 };
 
 export default Card;
+
+{/* <button
+  className={
+    !isLoading && firestoreState.wishlist
+      ? firestoreState.wishlist.find((game) => game.data().name === name)
+        ? "p-3 bg-black absolute top-3 right-3 rounded-full text-red-500 transition-colors hearted"
+        : "p-3 bg-black absolute top-3 right-3 rounded-full text-white transition-all active:scale-90 hover:text-red-500"
+      : "p-3 bg-black absolute top-3 right-3 rounded-full text-white btn-disabled cursor-not-allowed"
+  }
+  onClick={() => handleHeartClick(obj, "wishlist", name)}
+>
+  <FaHeart className=" text-sm" />
+</button>; */}

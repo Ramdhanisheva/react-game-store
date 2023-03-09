@@ -126,6 +126,7 @@ const Games = () => {
         key={index}
         className="cursor-pointer group"
         onClick={() => handleGenreClick(genre.name)}
+        data-test-id={`sort-by-${genre.name}`}
       >
         <button className="flex text-lg p-1">
           <div
@@ -137,7 +138,7 @@ const Games = () => {
           >
             {genre.icon}
           </div>
-          <span className="self-center capitalize text-white">
+          <span className="self-center capitalize text-white" data-test-id={`${genre.name}`}>
             {genre.name == "rpg" ? genre.name.toUpperCase() : genre.name}
           </span>
         </button>
@@ -172,7 +173,7 @@ const Games = () => {
             <div className="p-4 flex gap-2">
               <button className="btn bg-zinc-800 hover:bg-zinc-700 font-medium capitalize">
                 Filter by:
-                <b className="ml-2">
+                <b className="ml-2" data-test-id="filter-by">
                   {filterBy
                     ? filterBy == "rpg"
                       ? filterBy.toUpperCase()
@@ -185,6 +186,7 @@ const Games = () => {
                 onClick={() => {
                   dispatch({ type: "CLEAR_FILTER" });
                 }}
+                data-test-id="clear-filter"
               >
                 Clear filter
               </button>
