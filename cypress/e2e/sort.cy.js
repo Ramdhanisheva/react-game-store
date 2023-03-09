@@ -7,7 +7,6 @@ describe("filter", () => {
     cy.login(true);
     cy.wait(2000);
     cy.getBySel("browse").click();
-    cy.wait(3000);
   });
 
   afterEach(() => {
@@ -49,6 +48,32 @@ describe("filter", () => {
       });
   });
 
+  it("should sort by genre", () => {
+    const cards = [];
+    const genre = "action";
+    let found = true;
+    cy.get('[data-test-id="sort-by-action"]').click();
+    cy.log(cy.get('[data-test-id="action"]').textContent);
+    cy.get('[data-test-id^="card-"]')
+      .each((card) => {
+        const temp = card[0]
+          .querySelector('[data-test-id="genre"]')
+          .textContent.replace("Genres: ", "");
+        cards.push(temp);
+      })
+      .then(() => {
+        console.log("dez nuts");
+        console.log(cards);
+        cards.forEach((card) => {
+          console.log(card);
+          if (!card.toLowerCase().includes(genre)) {
+            found = false;
+          }
+        });
+        expect(found).to.be.true;
+      });
+  });
+
   it("should sort by wishlist", () => {
     const cards = [];
     let found = true;
@@ -78,34 +103,10 @@ describe("filter", () => {
               }
             });
           });
+          expect(found).to.be.true;
         });
-        expect(found).to.be.true;
       });
   });
 
-  it.only("should sort by genre", () => {
-    const cards = [];
-    const genre = "action";
-    let found = true;
-    cy.get('[data-test-id="sort-by-action"]').click();
-    cy.log(cy.get('[data-test-id="action"]').textContent);
-    cy.get('[data-test-id^="card-"]')
-      .each((card) => {
-        const temp = card[0]
-          .querySelector('[data-test-id="genre"]')
-          .textContent.replace("Genres: ", "");
-        cards.push(temp);
-      })
-      .then(() => {
-        console.log("dez nuts");
-        console.log(cards);
-        cards.forEach((card) => {
-          console.log(card);
-          if (!card.toLowerCase().includes(genre)) {
-            found = false;
-          }
-        });
-        expect(found).to.be.true;
-      });
-  });
+  
 });
