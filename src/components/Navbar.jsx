@@ -53,6 +53,7 @@ const Navbar = ({ dispatch }) => {
           tabIndex={0}
           className="btn btn-ghost btn-circle"
           htmlFor="my-drawer"
+          data-test-id="drawer"
         >
           <div className="indicator">
             <svg

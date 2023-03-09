@@ -49,6 +49,7 @@ const Drawer = ({ children }) => {
         <li
           className="bg-[#262626] rounded-lg p-4 flex gap-2 items-center"
           key={index}
+          data-test-id={`cartItem-#{game.id}`}
         >
           <span className="text-sm font-semibold flex-auto">{game.name}</span>
           <span className="text-sm font-medium text-zinc-500">

@@ -121,15 +121,16 @@ const Card = ({
                 <FaCheck />
               </div>
             ) : (
-              <div
+              <button
                 className="flex text-zinc-400 hover:text-primary transition-colors duration-200 cursor-pointer"
                 onClick={() => handleCartClick("orders", "add", obj)}
+                data-test-id="cart"
               >
                 <span className="text-sm font-semibold  mr-2 self-center">
                   Add to cart
                 </span>
                 <FaPlus className="self-center" />
-              </div>
+              </button>
             )}
             <span className="font-semibold">${getPrice(name)}</span>
           </div>
