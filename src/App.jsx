@@ -12,10 +12,10 @@ import Signup from "./pages/Signup";
 import log from "loglevel";
 
 const App = () => {
-  if (process.env.NODE_ENV === 'production') {
-    log.setLevel('warn');
+  if (process.env.NODE_ENV === "production") {
+    log.setLevel("warn");
   } else {
-    log.setLevel('debug');
+    log.setLevel("debug");
   }
 
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
-import log from 'loglevel';
+import log from "loglevel";
 
-const logger = log.getLogger('myApp');
+const logger = log.getLogger("myApp");
 
 export default logger;

@@ -8,7 +8,6 @@ import { auth } from "../../utils/firebase";
 import handleGoogleAuth from "../../utils/googleOAuth";
 import logger from "../../utils/logger";
 
-
 const Signup = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();

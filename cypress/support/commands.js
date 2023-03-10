@@ -24,9 +24,9 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-Cypress.Commands.add('getBySel', (selector) => {
+Cypress.Commands.add("getBySel", (selector) => {
   return cy.get(`[data-test-id="${selector}"]`);
-})
+});
 
 Cypress.Commands.add("login", (remembered) => {
   cy.get("input[name=email]").type("isenahemmanuel@gmail.com");
@@ -37,4 +37,4 @@ Cypress.Commands.add("login", (remembered) => {
   } else {
     cy.get("button[type=submit]").click();
   }
-})
+});

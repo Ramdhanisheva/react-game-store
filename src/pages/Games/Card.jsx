@@ -135,7 +135,12 @@ const Card = ({
             <span className="font-semibold">${getPrice(name)}</span>
           </div>
           <div className="flex justify-between gap-2">
-            <span className="card-title text-white font-bold" data-test-id="title-name">{name}</span>
+            <span
+              className="card-title text-white font-bold"
+              data-test-id="title-name"
+            >
+              {name}
+            </span>
             <div className={metacriticStyles}>
               <span className="text-xs" data-test-id="metacritic">
                 {metacritic}
@@ -166,7 +171,8 @@ const Card = ({
 
 export default Card;
 
-{/* <button
+{
+  /* <button
   className={
     !isLoading && firestoreState.wishlist
       ? firestoreState.wishlist.find((game) => game.data().name === name)
@@ -177,4 +183,5 @@ export default Card;
   onClick={() => handleHeartClick(obj, "wishlist", name)}
 >
   <FaHeart className=" text-sm" />
-</button>; */}
+</button>; */
+}

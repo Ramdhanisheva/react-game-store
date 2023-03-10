@@ -51,7 +51,7 @@ const FirestoreContextProvider = ({ children }) => {
         collection(db, "orders"),
         where("user", "==", user?.uid)
       );
-  
+
       const unsubWishlist = onSnapshot(wishlistQuery, (snapshot) => {
         const data = [];
         snapshot.docs.forEach((doc) => {
@@ -59,7 +59,7 @@ const FirestoreContextProvider = ({ children }) => {
         });
         dispatch({ type: "UPDATE_WISHLIST", payload: data });
       });
-  
+
       const unsubOrders = onSnapshot(ordersQuery, (snapshot) => {
         const ordersDocs = snapshot.docs.filter(
           (doc) => doc.data().isCompleted == true
@@ -72,7 +72,7 @@ const FirestoreContextProvider = ({ children }) => {
           payload: { ordersDocs: ordersDocs, cartItemsDocs: cartItemsDocs },
         });
       });
-  
+
       return () => {
         unsubWishlist();
         unsubOrders();
