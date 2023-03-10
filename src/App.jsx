@@ -9,8 +9,15 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Signup from "./pages/Signup";
+import log from "loglevel";
 
 const App = () => {
+  if (process.env.NODE_ENV === 'production') {
+    log.setLevel('warn');
+  } else {
+    log.setLevel('debug');
+  }
+
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const location = useLocation();
