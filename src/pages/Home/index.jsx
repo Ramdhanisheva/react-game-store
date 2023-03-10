@@ -10,20 +10,6 @@ const Home = () => {
   const { user, dispatch } = useContext(AuthContext);
   logger.debug(user);
 
-  const animation = {
-    in: { opacity: 0, x: -150 },
-    animate: {
-      opacity: 1,
-      x: 0,
-      transition: { x: { type: "spring", duration: 1, bounce: 0.4 } },
-    },
-    out: {
-      opacity: 0,
-      x: -150,
-      transition: { x: { type: "just", duration: 0.4 } },
-    },
-  };
-
   return (
     <Transition direction="left" duration={1} distance={100}>
       <div className="mx-4 md:mx-6 lg:mx-10 4xl:max-w-[1980px] 4xl:mx-auto">
