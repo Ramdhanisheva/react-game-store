@@ -145,7 +145,7 @@ const Carousel = () => {
               >
                 {images}
               </div>
-              <span className="text-4xl font-bold text-white absolute p-14 self-end bottom-0">
+              <span className="text-xl md:text-2xl lg:text-4xl font-bold text-white absolute p-8 md:p-10 lg:p-14 self-end bottom-0">
                 {slideName}
               </span>
             </>
@@ -153,7 +153,7 @@ const Carousel = () => {
         </div>
       </div>
       <div className="md:col-span-1 col-span-5 rounded-2x">
-        <ul className="flex flex-col justify-between h-full gap-2">
+        <ul className="flex flex-col justify-between h-full gap-2 mb-4 md:mb-0">
           {!loading && !error && sideCards}
         </ul>
       </div>
