@@ -61,8 +61,8 @@ const Login = () => {
   }, [email, password, , isRemember]);
 
   return (
-    <Transition styles="bg-gray-50 dark:bg-zinc-900">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <Transition styles="bg-gray-50 dark:bg-zinc-900 min-h-screen flex">
+      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 container">
         <a
           href="#"
           className="flex items-center mb-6 text-3xl font-bold text-gray-900 dark:text-white"
