@@ -1,3 +1,5 @@
+import logger from "../../utils/logger";
+
 const initialState = {
   games: null,
   initGames: null,
@@ -107,7 +109,7 @@ const reducer = (state, action) => {
         queriedGames: filterByQuery,
       };
     case "CLEAR_FILTER":
-      console.log(state.initGames);
+      logger.debug(state.initGames);
       return {
         ...state,
         games: state.initGames,

@@ -1,9 +1,10 @@
-import createDoc from "../utils/createDoc";
-import modifyDoc from "../utils/modifyDoc";
-import eraseDoc from "../utils/eraseDoc";
 import { createContext, useContext } from "react";
-import { FirestoreContext } from "./FirestoreContext";
+import createDoc from "../utils/createDoc";
+import eraseDoc from "../utils/eraseDoc";
+import modifyDoc from "../utils/modifyDoc";
 import { AuthContext } from "./AuthContext";
+import { FirestoreContext } from "./FirestoreContext";
+import logger from "../utils/logger";
 
 const CartContext = createContext(null);
 
@@ -13,7 +14,7 @@ const CartContextProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
 
   const handleCartClick = (docCollection, action, game) => {
-    console.log(game);
+    logger.debug(game);
     if (action == "add") {
       if (!firestoreState.cartItems) {
         const obj = {
@@ -22,7 +23,7 @@ const CartContextProvider = ({ children }) => {
           games: [game],
         };
 
-        console.log(obj);
+        logger.debug(obj);
         firestoreDispatch({ type: "UPDATE_IS_LOADING", payload: true });
         createDoc(obj, docCollection);
       } else {
@@ -47,10 +48,9 @@ const CartContextProvider = ({ children }) => {
       const obj = {
         ...firestoreState.cartItems.data(),
         isCompleted: true,
-      }
+      };
       modifyDoc(obj, docCollection, firestoreState.cartItems.id);
-    }
-    else {
+    } else {
       const newObj = {
         ...firestoreState.cartItems.data(),
         games: [],

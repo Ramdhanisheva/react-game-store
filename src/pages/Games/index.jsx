@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useReducer } from "react";
 import Navbar from "../../components/Navbar";
+import Transition from "../../components/Transition";
 import { CartContext } from "../../context/CartContext";
 import { FirestoreContext } from "../../context/FirestoreContext";
 import { fetchGames } from "../../utils/fetchGames";
 import Card from "./Card";
 import filters from "./filters";
 import { initialState, reducer } from "./GameReducer";
-import genres from "./genres";  
-import Transition from "../../components/Transition";
+import genres from "./genres";
+import logger from "../../utils/logger";
 
 const Games = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -24,7 +25,7 @@ const Games = () => {
     useContext(FirestoreContext);
   const { handleHeartClick } = useContext(CartContext);
 
-  console.log(games);
+  logger.debug(games);
 
   const filterSort = (filter) => {
     if (filter == "metacritic") {
@@ -63,7 +64,7 @@ const Games = () => {
       ignore = true;
     };
   }, []);
-  console.log(isLoading);
+  logger.debug(isLoading);
 
   useEffect(() => {
     // Re-render wishlist games if filter active
@@ -81,15 +82,19 @@ const Games = () => {
   }, [firestoreState.wishlist]);
 
   const handleFilterClick = (filter) => {
-    console.log(`Sort by ${filter}`);
-    if (!firestoreState.isLoading || filter == "release date" || filter == "metacritic") {
+    logger.debug(`Sort by ${filter}`);
+    if (
+      !firestoreState.isLoading ||
+      filter == "release date" ||
+      filter == "metacritic"
+    ) {
       dispatch({ type: "SET_CURRENT_SELECTED_IS_FILTER_BY", payload: filter });
       filterSort(filter);
     }
   };
 
   const handleGenreClick = (genre) => {
-    console.log(`Sort by ${genre}`);
+    logger.debug(`Sort by ${genre}`);
     dispatch({ type: "FILTER_BY_GENRE", payload: genre });
     dispatch({ type: "SET_CURRENT_SELECTED_IS_FILTER_BY", payload: genre });
   };
@@ -138,7 +143,10 @@ const Games = () => {
           >
             {genre.icon}
           </div>
-          <span className="self-center capitalize text-white" data-test-id={`${genre.name}`}>
+          <span
+            className="self-center capitalize text-white"
+            data-test-id={`${genre.name}`}
+          >
             {genre.name == "rpg" ? genre.name.toUpperCase() : genre.name}
           </span>
         </button>
@@ -147,7 +155,7 @@ const Games = () => {
   });
 
   return (
-    <Transition direction="right" duration={1} distance={100} >
+    <Transition direction="right" duration={1} distance={100}>
       <div className="mx-4 md:mx-6 lg:mx-10 4xl:max-w-[1980px] 4xl:mx-auto">
         <Navbar dispatch={dispatch} />
         <div className="grid grid-cols-12 mt-8 relative">

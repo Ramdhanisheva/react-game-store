@@ -1,14 +1,14 @@
-import { motion } from "framer-motion";
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import Carousel from "../../components/Carousel/Carousel";
 import Navbar from "../../components/Navbar";
-import { AuthContext } from "../../context/AuthContext";
 import Transition from "../../components/Transition";
+import { AuthContext } from "../../context/AuthContext";
+import logger from "../../utils/logger";
 
 const Home = () => {
   const { user, dispatch } = useContext(AuthContext);
-  console.log(user);
+  logger.debug(user);
 
   const animation = {
     in: { opacity: 0, x: -150 },
@@ -25,8 +25,7 @@ const Home = () => {
   };
 
   return (
-    <Transition direction="left" duration={1} distance={100}
-    >
+    <Transition direction="left" duration={1} distance={100}>
       <div className="mx-4 md:mx-6 lg:mx-10 4xl:max-w-[1980px] 4xl:mx-auto">
         <Navbar />
       </div>
@@ -40,10 +39,14 @@ const Home = () => {
           {!user ? (
             <>
               <li className="text-white hover:text-white transition-colors ease-in-out duration-200">
-                <Link to="/auth/login" data-test-id="login">Login</Link>
+                <Link to="/auth/login" data-test-id="login">
+                  Login
+                </Link>
               </li>
               <li className="text-white hover:text-white transition-colors ease-in-out duration-200">
-                <Link to="/auth/signup" data-test-id="sign-up">Sign up</Link>
+                <Link to="/auth/signup" data-test-id="sign-up">
+                  Sign up
+                </Link>
               </li>
             </>
           ) : (
@@ -54,7 +57,9 @@ const Home = () => {
                   dispatch({ type: "logout" });
                 }}
               >
-                <Link to="/auth/login" data-test-id="logout">Logout</Link>
+                <Link to="/auth/login" data-test-id="logout">
+                  Logout
+                </Link>
               </li>
               <span className="text-white">{user.email}</span>
             </>

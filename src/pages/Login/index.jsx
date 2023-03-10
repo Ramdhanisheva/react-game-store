@@ -1,13 +1,12 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { FaGamepad, FaGoogle } from "react-icons/fa";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../utils/firebase";
+import React, { useContext, useEffect, useState } from "react";
+import { FaGamepad, FaGoogle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
-import { useContext } from "react";
-import handleGoogleAuth from "../../utils/googleOAuth";
 import Transition from "../../components/Transition";
+import { AuthContext } from "../../context/AuthContext";
+import { auth } from "../../utils/firebase";
+import handleGoogleAuth from "../../utils/googleOAuth";
+import logger from "../../utils/logger";
 
 const Login = () => {
   const { user } = useContext(AuthContext);
@@ -16,10 +15,9 @@ const Login = () => {
   useEffect(() => {
     // Redirect to home page if user is authenticated
     if (user) {
-      navigate('/');
+      navigate("/");
     }
   }, [user, navigate]);
-  
 
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
@@ -27,7 +25,7 @@ const Login = () => {
   const [isError, setIsError] = useState(false);
   const { dispatch } = useContext(AuthContext);
 
-  async function signIn({email, password, remember}) {
+  async function signIn({ email, password, remember }) {
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -35,16 +33,16 @@ const Login = () => {
         password
       );
       const user = userCredential.user;
-      console.log(user);
+      logger.debug(user);
       dispatch({
         type: "login",
         payload: user,
         isRemember: remember || false,
       });
-      navigate("/")
+      navigate("/");
     } catch (error) {
       setIsError(true);
-      console.log(error.code, error.message);
+      logger.debug(error.code, error.message);
     }
   }
 
@@ -53,13 +51,13 @@ const Login = () => {
     const form = e.target;
     const formData = new FormData(form);
     const formJson = Object.fromEntries(formData.entries());
-    console.log(formJson);
+    logger.debug(formJson);
 
     signIn(formJson);
   };
 
   useEffect(() => {
-    console.log(email, password, isRemember);
+    logger.debug(email, password, isRemember);
   }, [email, password, , isRemember]);
 
   return (

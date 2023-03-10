@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { fetchGames } from "../../utils/fetchGames";
 import useCarousel from "./useCarousel";
+import logger from "../../utils/logger";
 
 const Carousel = () => {
   const [state, dispatch] = useCarousel();
@@ -11,7 +12,7 @@ const Carousel = () => {
   const carouselRef = useRef(null);
   const intervalRef = useRef(null);
 
-  console.log(slideGames);
+  logger.debug(slideGames);
 
   useEffect(() => {
     let ignore = false;
@@ -23,7 +24,7 @@ const Carousel = () => {
         );
         !ignore && dispatch({ type: "SET_GAMES", payload: games });
       } catch (err) {
-        console.log(err);
+        logger.debug(err);
         dispatch({ type: "SET_ERROR", payload: true });
       }
     };
@@ -34,7 +35,7 @@ const Carousel = () => {
 
   useEffect(() => {
     if (!loading && !error && carouselRef) {
-      console.log("Component loaded");
+      logger.debug("Component loaded");
       dispatch({
         type: "INIT_SCROLL_SLIDE",
         payload: [0, slideGames.length, carouselRef, "to"],

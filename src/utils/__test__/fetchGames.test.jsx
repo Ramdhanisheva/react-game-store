@@ -1,5 +1,6 @@
 import "@testing-library/jest-dom";
 import { sendRequest, storeGames } from "../fetchGames";
+import logger from "../logger";
 
 const url = "https://www.example.com/games";
 const expectedData = {
@@ -33,7 +34,7 @@ describe("test sendRequest", () => {
     window.fetch = mockFetch;
 
     const games = await sendRequest(url);
-    console.log(games);
+    logger.debug(games);
 
     expect(games.results[0].name).toMatch(/Cyber/);
   });

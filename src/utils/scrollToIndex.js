@@ -1,9 +1,11 @@
+import logger from "./logger";
+
 const scrollToPrev = (index, length, ref) => {
   const listNode = ref.current;
   const isFirstSlide = index == 0;
   const newIndex = isFirstSlide ? length - 1 : index - 1;
   const imgNode = listNode.querySelectorAll(".carousel-item")[newIndex];
-  console.log(imgNode);
+  logger.debug(imgNode);
   imgNode.scrollIntoView({
     behavior: "smooth",
     block: "nearest",
@@ -16,7 +18,7 @@ const scrollToNext = (index, length, ref) => {
   const isLastSlide = index == length - 1;
   const newIndex = isLastSlide ? 0 : index + 1;
   const imgNode = listNode.querySelectorAll(".carousel-item")[newIndex];
-  console.log(imgNode);
+  logger.debug(imgNode);
   imgNode.scrollIntoView({
     behavior: "smooth",
     block: "nearest",
@@ -27,7 +29,7 @@ const scrollToNext = (index, length, ref) => {
 const scrollToExact = (index, length, ref) => {
   const listNode = ref.current;
   const imgNode = listNode.querySelectorAll(".carousel-item")[index];
-  console.log(imgNode);
+  logger.debug(imgNode);
   imgNode.scrollIntoView({
     behavior: "smooth",
     block: "nearest",

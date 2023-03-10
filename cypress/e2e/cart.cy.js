@@ -1,5 +1,6 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../src/utils/firebase";
+import logger from "../../src/utils/logger";
 
 describe("cart", () => {
   beforeEach(() => {
@@ -31,7 +32,7 @@ describe("cart", () => {
           querySnapshot.docs[0].data().games.forEach((game) => {
             if (game.name == titleName) {
               found = true;
-              console.log(found);
+              logger.debug(found);
             }
           });
           expect(found).to.be.true;

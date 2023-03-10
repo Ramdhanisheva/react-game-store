@@ -1,5 +1,6 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../src/utils/firebase";
+import logger from "../../src/utils/logger";
 
 describe("wishlist", () => {
   beforeEach(() => {
@@ -31,7 +32,7 @@ describe("wishlist", () => {
           querySnapshot.docs.forEach((doc) => {
             if (doc.data().name == titleName) {
               found = true;
-              console.log(found);
+              logger.debug(found);
             }
           });
           expect(found).to.be.true;
@@ -46,7 +47,7 @@ describe("wishlist", () => {
     cy.get('div[data-test-id^="card-"] button[data-test-id="wishlist"]')
       .first()
       .then((wishlistButton) => {
-        console.log(wishlistButton);
+        logger.debug(wishlistButton);
         titleName = wishlistButton[0]
           .closest('div[data-test-id^="card-"]')
           .querySelector('[data-test-id="title-name"]').textContent;
@@ -59,7 +60,7 @@ describe("wishlist", () => {
           getDocs(querySnapshot).then((querySnapshot) => {
             querySnapshot.docs.forEach((doc) => {
               if (doc.data().name == titleName) {
-                console.log(doc.data().name, titleName);
+                logger.debug(doc.data().name, titleName);
                 removed = false;
               }
             });

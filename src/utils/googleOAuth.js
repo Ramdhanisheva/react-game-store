@@ -1,4 +1,5 @@
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import logger from "./logger";
 
 const handleGoogleAuth = async (auth, loginDispatch, navigate) => {
   const provider = new GoogleAuthProvider();
@@ -11,7 +12,7 @@ const handleGoogleAuth = async (auth, loginDispatch, navigate) => {
     loginDispatch({ type: "login", payload: user, isRemember: true });
     navigate("/");
   } catch (error) {
-    console.log(error);
+    logger.debug(error);
   }
 };
 

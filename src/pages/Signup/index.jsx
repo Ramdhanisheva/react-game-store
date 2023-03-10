@@ -1,25 +1,25 @@
-import React from "react";
-import { FaGamepad, FaGoogle } from "react-icons/fa";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { useReducer } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../utils/firebase";
-import { AuthContext } from "../../context/AuthContext";
-import { useContext, useEffect } from "react";
-import handleGoogleAuth from "../../utils/googleOAuth";
+import React, { useContext, useEffect, useReducer } from "react";
+import { FaGamepad, FaGoogle } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 import Transition from "../../components/Transition";
+import { AuthContext } from "../../context/AuthContext";
+import { auth } from "../../utils/firebase";
+import handleGoogleAuth from "../../utils/googleOAuth";
+import logger from "../../utils/logger";
+
 
 const Signup = () => {
-  const { user } = useContext(AuthContext)
-  const navigate = useNavigate()
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Redirect to home page if user is authenticated
     if (user) {
-      navigate('/');
+      navigate("/");
     }
-  }, [user, navigate]);  // Redirect user if is authenticated
-  user && navigate("/")
+  }, [user, navigate]); // Redirect user if is authenticated
+  user && navigate("/");
 
   const initialState = { email: null, password: null, isError: null };
 
@@ -59,7 +59,7 @@ const Signup = () => {
       loginDispatch({ type: "login", payload: user, isRemember: true });
       navigate("/");
     } catch (error) {
-      console.log(error);
+      logger.debug(error);
       dispatch({ type: "UPDATE_ISERROR", payload: null });
     }
   };

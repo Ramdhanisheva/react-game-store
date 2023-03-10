@@ -1,5 +1,6 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../src/utils/firebase";
+import logger from "../../src/utils/logger";
 
 describe("filter", () => {
   beforeEach(() => {
@@ -62,10 +63,10 @@ describe("filter", () => {
         cards.push(temp);
       })
       .then(() => {
-        console.log("dez nuts");
-        console.log(cards);
+        logger.debug("dez nuts");
+        logger.debug(cards);
         cards.forEach((card) => {
-          console.log(card);
+          logger.debug(card);
           if (!card.toLowerCase().includes(genre)) {
             found = false;
           }
@@ -82,11 +83,11 @@ describe("filter", () => {
     cy.get('button[data-test-id="wishlist"]')
       .closest('div[data-test-id^="card-"]')
       .each((card) => {
-        console.log(card);
+        logger.debug(card);
         let temp = card[0].querySelector(
           '[data-test-id="title-name"]'
         ).textContent;
-        console.log(temp);
+        logger.debug(temp);
         cards.push(temp);
       })
       .then(async () => {
@@ -96,7 +97,7 @@ describe("filter", () => {
         );
         getDocs(querySnapshot).then((querySnapshot) => {
           querySnapshot.docs.forEach((doc) => {
-            console.log(`${doc.id} => ${doc.data()}`);
+            logger.debug(`${doc.id} => ${doc.data()}`);
             cards.forEach((card) => {
               if (card != doc.data().name) {
                 found = false;
@@ -107,6 +108,4 @@ describe("filter", () => {
         });
       });
   });
-
-  
 });
