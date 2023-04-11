@@ -153,6 +153,7 @@ const Carousel = () => {
         </div>
       </div>
       <div className="md:col-span-1 col-span-5 rounded-2x">
+      <div className="lg:col-span-1 col-span-5 rounded-2xl">
         <ul className="flex flex-col justify-between h-full gap-2 mb-4 md:mb-0">
           {!loading && !error && sideCards}
         </ul>
