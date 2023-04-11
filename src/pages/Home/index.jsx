@@ -11,12 +11,17 @@ const Home = () => {
   logger.debug(user);
 
   return (
-    <Transition direction="left" duration={1} distance={100}>
+    <Transition
+      styles={"flex flex-col min-h-screen"}
+      direction="left"
+      duration={1}
+      distance={100}
+    >
       <div className="mx-4 md:mx-6 lg:mx-10 4xl:max-w-[1980px] 4xl:mx-auto">
         <Navbar />
       </div>
-      <div className="container mx-auto px-4">
-        <ul className="flex items-center py-8 gap-7 text-sm font-medium">
+      <div className="container mx-auto px-4 flex flex-grow flex-col">
+        <ul className="flex items-center py-8 pb-4 gap-7 text-sm font-medium">
           <li className="text-white/50 hover:text-white transition-colors ease-in-out duration-300">
             <Link to="/games" className="" data-test-id="browse">
               Browse
@@ -51,7 +56,9 @@ const Home = () => {
             </>
           )}
         </ul>
-        <Carousel />
+        <div className="flex items-center flex-grow">
+          <Carousel />
+        </div>
       </div>
     </Transition>
   );

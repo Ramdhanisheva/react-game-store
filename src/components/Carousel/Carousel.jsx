@@ -135,7 +135,7 @@ const Carousel = () => {
 
   return (
     <div className="grid grid-cols-5 gap-8">
-      <div className="md:col-span-4 col-span-5">
+      <div className="lg:col-span-4 col-span-5">
         <div className="relative">
           {!loading && !error && (
             <>
@@ -152,7 +152,6 @@ const Carousel = () => {
           )}
         </div>
       </div>
-      <div className="md:col-span-1 col-span-5 rounded-2x">
       <div className="lg:col-span-1 col-span-5 rounded-2xl">
         <ul className="flex flex-col justify-between h-full gap-2 mb-4 md:mb-0">
           {!loading && !error && sideCards}
