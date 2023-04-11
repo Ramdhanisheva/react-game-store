@@ -26,7 +26,7 @@ const Navbar = ({ dispatch }) => {
           <h2 className="font-bold text-xl">GameStore</h2>
         </Link>
       </div>
-      <div className="w-full md:w-[26rem] order-last md:order-1 justify-center">
+      <div className="w-full md:w-[22rem] lg:w-[26rem] order-last md:order-1 justify-center">
         <input
           type="text"
           placeholder="Search games..."
