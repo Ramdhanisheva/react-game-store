@@ -56,7 +56,7 @@ const Home = () => {
             </>
           )}
         </ul>
-        <div className="flex items-center flex-grow">
+        <div className="flex items-center flex-grow mb-16">
           <Carousel />
         </div>
       </div>
