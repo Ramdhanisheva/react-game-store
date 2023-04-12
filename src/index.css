@@ -30,19 +30,14 @@
 }
 
 button[data-testid="carousel-indicator"] {
-  background-color: #6218c9DD !important;
+  background-color: #6218c9dd !important;
   padding: 0.4rem;
   border: 2px solid rgba(255, 255, 255, 0.5);
 }
 
 button[data-testid="carousel-indicator"]:hover {
-  background-color: #6218c9DD;
+  background-color: #6218c9dd;
   padding: 0.4rem;
   border: 2px solid rgba(255, 255, 255, 0.85);
   cursor: pointer;
 }
-
-
-
-
-
