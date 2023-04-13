@@ -1,19 +1,26 @@
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
+import { auth } from "./firebase";
 import logger from "./logger";
 
-const handleGoogleAuth = async (auth, loginDispatch, navigate) => {
-  const provider = new GoogleAuthProvider();
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken;
-    const user = result.user;
-
-    loginDispatch({ type: "login", payload: user, isRemember: true });
-    navigate("/");
-  } catch (error) {
-    logger.debug(error);
+async function handleCredentialResponse(response, dispatch) {
+    // Build Firebase credential with the Google ID token.
+    const credential = GoogleAuthProvider.credential(
+      null,
+      response.access_token
+    );
+    try {
+      const userCredential = await signInWithCredential(auth, credential);
+      logger.debug(userCredential);
+      const user = userCredential.user;
+      dispatch({
+        type: "login",
+        payload: user,
+        isRemember: true,
+      });
+      navigate("/");
+    } catch (error) {
+      logger.debug(error.code, error.message);
+    }
   }
-};
 
-export default handleGoogleAuth;
+export default handleCredentialResponse;

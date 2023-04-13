@@ -5,8 +5,11 @@ import { Link, useNavigate } from "react-router-dom";
 import Transition from "../../components/Transition";
 import { AuthContext } from "../../context/AuthContext";
 import { auth } from "../../utils/firebase";
-import handleGoogleAuth from "../../utils/googleOAuth";
 import logger from "../../utils/logger";
+import { useGoogleLogin } from "@react-oauth/google";
+import { GoogleAuthProvider, signInWithCredential } from "firebase/auth";
+import handleCredentialResponse from "../../utils/googleOAuth";
+
 
 const Login = () => {
   const { user } = useContext(AuthContext);
@@ -24,6 +27,12 @@ const Login = () => {
   const [isRemember, setIsRemember] = useState(true);
   const [isError, setIsError] = useState(false);
   const { dispatch } = useContext(AuthContext);
+
+  const handleGoogleAuth = useGoogleLogin({
+    onSuccess: (response) => handleCredentialResponse(response, dispatch),
+    onError: (error) => console.log("Login Failed:", error),
+  });
+
 
   async function signIn({ email, password, remember }) {
     try {
@@ -175,7 +184,7 @@ const Login = () => {
               <button
                 className="flex justify-center align-middle w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center border-2 dark:border-primary dark:bg-ghost dark:hover:bg-primary dark:focus:ring-primary-800"
                 onClick={() => {
-                  handleGoogleAuth(auth, dispatch, navigate);
+                  handleGoogleAuth();
                 }}
               >
                 <FaGoogle className="mr-2 self-center" />
