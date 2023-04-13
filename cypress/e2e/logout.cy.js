@@ -6,7 +6,7 @@ describe("logout", () => {
   it("should log out", () => {
     cy.login(false);
     cy.getBySel("logout").click();
-    cy.url().should("eq", "http://localhost:5173/#/auth/login");
+    cy.url().should("eq", "http://localhost:5173/react-game-store/#/auth/login");
     cy.getAllLocalStorage().then((result) => {
       expect(result)
         .to.have.property("http://localhost:5173")

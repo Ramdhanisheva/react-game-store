@@ -5,7 +5,7 @@ describe("Log in", () => {
 
   it("log in and remember user credentials", () => {
     cy.login(true);
-    cy.url().should("eq", "http://localhost:5173/#/");
+    cy.url().should("eq", "http://localhost:5173/react-game-store/#/");
     cy.getAllLocalStorage().then((result) => {
       expect(result)
         .to.have.property("http://localhost:5173")
@@ -18,7 +18,7 @@ describe("Log in", () => {
 
   it("log in and not remember user credentials", () => {
     cy.login(false);
-    cy.url().should("eq", "http://localhost:5173/#/");
+    cy.url().should("eq", "http://localhost:5173/react-game-store/#/");
     cy.getAllSessionStorage().then((result) => {
       expect(result)
         .to.have.property("http://localhost:5173")
