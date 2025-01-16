@@ -11,8 +11,6 @@
 
 ## Live Demo 🔴
 
-<p>You can view a live demo by clicking <a href="https://armadillidiid.github.io/react-game-store/">HERE</a></p>
-
 ## Screenshots
 
 ![](/img/showcase_5.png)
