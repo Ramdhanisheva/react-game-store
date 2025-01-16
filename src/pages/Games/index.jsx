@@ -45,7 +45,7 @@ const Games = () => {
 
     const sendRequest = async () => {
       const data = await fetchGames(
-        "https://api.rawg.io/api/games?page_size=40&key=da8b78f38c134484a249b5f177270923"
+        "https://api.rawg.io/api/games?page_size=40&key=35fa338d10b34cdb9f0641da58d710ef"
       );
 
       if (!ignore) {
@@ -174,7 +174,7 @@ const Games = () => {
           <div className="col-span-12 md:col-span-9 lg:col-span-10">
             <div className="p-4">
               <h2 className="text-5xl font-bold text-white mb-2">
-                Trending and interesting
+              GameCrack is trending and interesting
               </h2>
               <span>Based on player counts and release date</span>
             </div>

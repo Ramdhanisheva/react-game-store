@@ -34,7 +34,7 @@ To run the application on your local machine, follow these steps:
   1. Clone the repository to your local machine.
 
 ```sh
-git clone https://github.com/Armadillidiid/react-game-store.git
+git clone 
 ```
 
 2. Install the required dependencies.

@@ -20,7 +20,7 @@ const Carousel = () => {
     const sendRequest = async () => {
       try {
         const games = await fetchGames(
-          "https://api.rawg.io/api/games?page_size=40&key=da8b78f38c134484a249b5f177270923"
+          "https://api.rawg.io/api/games?page_size=40&key=35fa338d10b34cdb9f0641da58d710ef"
         );
         !ignore && dispatch({ type: "SET_GAMES", payload: games });
       } catch (err) {

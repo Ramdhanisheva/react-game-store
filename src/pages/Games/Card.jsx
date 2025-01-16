@@ -132,7 +132,7 @@ const Card = ({
                 <FaPlus className="self-center" />
               </button>
             )}
-            <span className="font-semibold">${getPrice(name)}</span>
+           
           </div>
           <div className="flex justify-between gap-2">
             <span

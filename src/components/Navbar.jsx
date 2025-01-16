@@ -23,7 +23,7 @@ const Navbar = ({ dispatch }) => {
           className="flex p-3 active:scale-95 transition ease-in-out order-first md:order-first"
         >
           <FaGamepad className="self-center mr-2 " />
-          <h2 className="font-bold text-xl">GameStore</h2>
+          <h2 className="font-bold text-xl">RamdhanishevaRepack</h2>
         </Link>
       </div>
       <div className="w-full md:w-[22rem] lg:w-[26rem] order-last md:order-1 justify-center">
@@ -41,12 +41,12 @@ const Navbar = ({ dispatch }) => {
         <div>
           <a
             className="capitalize btn btn-ghost pr-0 md:pr-4"
-            href="https://github.com/Armadillidiid"
+            href="https://github.com/Ramdhanisheva"
             target="_blank"
             rel="noopener noreferrer"
           >
             <FaGithub className="text-white text-md lg:text-lg mr-1 md:mr-2" />
-            <h3 className="font-bold">armadillidiid</h3>
+            <h3 className="font-bold">Ramdhanisheva</h3>
           </a>
         </div>
         <label

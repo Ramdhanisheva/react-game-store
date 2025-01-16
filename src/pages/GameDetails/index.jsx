@@ -24,7 +24,7 @@ const GameDetails = () => {
   const [toggle, setToggle] = useState(true);
 
   const { id } = useParams();
-  const url = `https://api.rawg.io/api/games/${id}?key=da8b78f38c134484a249b5f177270923`;
+  const url = `https://api.rawg.io/api/games/${id}?key=35fa338d10b34cdb9f0641da58d710ef`;
 
   const sendRequest = async (url) => {
     return await fetch(url).then((res) => res.json());
@@ -43,7 +43,7 @@ const GameDetails = () => {
     queryKey: [`screenshot-${id}`],
     queryFn: () =>
       fetch(
-        `https://api.rawg.io/api/games/${id}/screenshots?key=da8b78f38c134484a249b5f177270923`
+        `https://api.rawg.io/api/games/${id}/screenshots?key=35fa338d10b34cdb9f0641da58d710ef`
       ).then((res) => res.json()),
   });
   logger.debug(dataImages);
