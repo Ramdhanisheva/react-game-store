@@ -15,7 +15,6 @@ import Spinner from "../../components/Spinner";
 import Transition from "../../components/Transition";
 import { CartContext } from "../../context/CartContext";
 import { FirestoreContext } from "../../context/FirestoreContext";
-import getPrice from "../../utils/getPrice";
 import logger from "../../utils/logger";
 
 const GameDetails = () => {
@@ -194,9 +193,6 @@ const GameDetails = () => {
                   </div>
                   <div className="flex justify-between p-5 bg-[#222222] rounded-2xl order-first lg:order-last">
                     <div className="flex gap-4 items-center text-zinc-400">
-                      <span className="font-bold text-lg">
-                        ${getPrice(data.name)}
-                      </span>
                       <FaHeart
                         className={`text-2xl transition-colors duration-200 cursor-pointer ${
                           !firestoreState.isLoading
